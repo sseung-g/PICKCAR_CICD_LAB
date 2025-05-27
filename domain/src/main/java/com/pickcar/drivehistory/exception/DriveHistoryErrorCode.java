@@ -1,8 +1,7 @@
 package com.pickcar.drivehistory.exception;
 
-import exception.ErrorCode;
-import exception.ErrorReason;
-import java.lang.reflect.Field;
+import com.pickcar.presentation.exception.ErrorCode;
+import com.pickcar.presentation.exception.ErrorReason;
 import org.springframework.http.HttpStatus;
 
 public enum DriveHistoryErrorCode implements ErrorCode {

@@ -1,4 +1,4 @@
-package exception;
+package com.pickcar.presentation.exception;
 
 public class GlobalException extends RuntimeException {
 

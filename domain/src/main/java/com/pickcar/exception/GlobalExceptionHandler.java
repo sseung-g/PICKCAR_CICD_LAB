@@ -1,11 +1,11 @@
 package com.pickcar.exception;
 
 import com.pickcar.drivehistory.exception.DriveHistoryException;
-import exception.ErrorResponse;
-import exception.GlobalException;
+import com.pickcar.presentation.exception.ErrorResponse;
+import com.pickcar.presentation.exception.GlobalException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import statics.GlobalStatic;
+import com.pickcar.util.constants.GlobalStatic;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
