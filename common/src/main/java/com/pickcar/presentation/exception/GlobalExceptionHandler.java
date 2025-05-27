@@ -1,8 +1,6 @@
-package com.pickcar.exception;
+package com.pickcar.presentation.exception;
 
 import com.pickcar.drivehistory.exception.DriveHistoryException;
-import com.pickcar.presentation.exception.ErrorResponse;
-import com.pickcar.presentation.exception.GlobalException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import com.pickcar.util.constants.GlobalStatic;
