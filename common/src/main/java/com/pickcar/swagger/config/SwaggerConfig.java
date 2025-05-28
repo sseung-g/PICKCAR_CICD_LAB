@@ -4,7 +4,7 @@ import com.pickcar.swagger.annotation.ApiErrorCodeExample;
 import com.pickcar.swagger.dto.ExampleHolder;
 import com.pickcar.exception.BaseErrorCode;
 import com.pickcar.exception.ErrorReason;
-import com.pickcar.exception.ErrorResponse;
+import com.pickcar.presentation.dto.response.ErrorResponse;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
@@ -68,9 +68,9 @@ public class SwaggerConfig {
                                     try {
                                         ErrorReason errorReason = baseErrorCode.getErrorReason();
                                         return ExampleHolder.builder()
-                                                .holder(getSwaggerExample(baseErrorCode.getExplainError(), errorReason))
-                                                .code(errorReason.status())
-                                                .name(errorReason.code())
+                                                .holder(getSwaggerExample(baseErrorCode.getExplainError(), baseErrorCode.getHttpStatusCode(), errorReason))
+                                                .code(baseErrorCode.getHttpStatusCode())
+                                                .name(errorReason.errorCode())
                                                 .build();
                                     } catch (NoSuchFieldException e) {
                                         throw new RuntimeException(e);      //TODO: 잡는 부분을 넣거나, 던지지 말고 다르게 처리
@@ -79,9 +79,9 @@ public class SwaggerConfig {
         addExamplesToResponses(responses, statusWithExampleHolders);
     }
 
-    private Example getSwaggerExample(String value, ErrorReason errorReason) {
+    private Example getSwaggerExample(String value, Integer statusCode, ErrorReason errorReason) {
 
-        ErrorResponse response = new ErrorResponse(errorReason.status(), errorReason.code(), errorReason.reason());
+        ErrorResponse response = new ErrorResponse(statusCode, errorReason.errorCode(), errorReason.reason());
         Example example = new Example();
         example.description(value);
         example.setValue(response);

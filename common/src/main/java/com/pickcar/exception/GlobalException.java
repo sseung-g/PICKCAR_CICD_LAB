@@ -12,4 +12,8 @@ public class GlobalException extends RuntimeException {
     public ErrorReason getErrorReason() {
         return this.errorCode.getErrorReason();
     }
+
+    public Integer getHttpStatusCode() {
+        return this.errorCode.getHttpStatusCode();
+    }
 }

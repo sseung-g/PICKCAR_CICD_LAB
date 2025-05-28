@@ -1,14 +1,10 @@
 package com.pickcar.presentation.dto.response;
 
-import java.time.LocalDateTime;
-
-public record SuccessResponse (
-        Boolean success,
-        Integer status,
-        Object data,
-        LocalDateTime timeStamp
+public record SuccessResponse(
+        ResponseInfo responseInfo,
+        Object data
 ) {
-    public SuccessResponse(Integer status, Object data) {
-        this(true, status, data, LocalDateTime.now());
+    public SuccessResponse(Integer statusCode, Object data) {
+        this(ResponseInfo.success(statusCode), data);
     }
 }
