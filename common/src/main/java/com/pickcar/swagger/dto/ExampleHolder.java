@@ -7,6 +7,6 @@ import lombok.Builder;
 public record ExampleHolder(
         Example holder,
         String name,
-        Integer code
+        Integer statusCode
 ) {
 }

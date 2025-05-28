@@ -40,9 +40,9 @@ public enum DriveHistoryErrorCode implements BaseErrorCode {
 
     @Override
     public String getExplainError() throws NoSuchFieldException {
-        Field field = this.getClass().getField(this.name());                            //Enum 클래스의 name을 기반으로 필드 추출
-        ExplainError annotation = field.getAnnotation(ExplainError.class);              
-        return Objects.nonNull(annotation) ? annotation.value() : this.getReason();     //Explain Error 어노테이션이 달려있으면, 그 값으로 활용, 없다면 getReason을 디폴트로 사용
+        Field field = this.getClass().getField(this.name());
+        ExplainError explainError = field.getAnnotation(ExplainError.class);
+        return Objects.nonNull(explainError) ? explainError.value() : this.getReason();
     }
 
     @Override

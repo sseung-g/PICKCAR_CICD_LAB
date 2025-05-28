@@ -36,15 +36,15 @@ public class SuccessResponseAdvice implements ResponseBodyAdvice {
         int status = servletResponse.getStatus();
         HttpStatus resolve = HttpStatus.resolve(status);
 
-        if(resolve == null) {
+        if (resolve == null) {
             return body;
         }
 
-        if(resolve.equals(HttpStatus.NO_CONTENT)) {
+        if (resolve.equals(HttpStatus.NO_CONTENT)) {
             return null;        //FIXME: null 반환 안정성 고려 필요
         }
 
-        if(resolve.is2xxSuccessful()) {
+        if (resolve.is2xxSuccessful()) {
             return new SuccessResponse(status, body);
         }
 
