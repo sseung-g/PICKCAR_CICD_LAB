@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class LogTestController {
 
     @GetMapping("/log")
-    public ResponseEntity<String> testLog() {
+    public ResponseEntity<Void> testLog() {
         log.trace("test log - {}", "trace");
         log.debug("test log - {}", "debug");
         log.info("test log : {}", "info");
         log.warn("test log - {}", "warn");
         log.error("test log - {}", "error");
 
-        return ResponseEntity.ok("test log");
+        return ResponseEntity.noContent().build();
     }
 }
