@@ -1,5 +1,10 @@
 package com.pickcar.global;
 
+import com.pickcar.auth.domain.User;
+import com.pickcar.auth.domain.UserInfo;
+import com.pickcar.auth.domain.UserRole;
+import com.pickcar.auth.domain.UserStatus;
+import com.pickcar.auth.infrastructure.UserRepository;
 import com.pickcar.company.domain.Company;
 import com.pickcar.company.domain.ContractStatus;
 import com.pickcar.company.infrastructure.CompanyRepository;
@@ -9,6 +14,7 @@ import com.pickcar.vehicle.domain.VehicleInfo;
 import com.pickcar.vehicle.domain.VehicleStatus;
 import com.pickcar.vehicle.infrastructure.VehicleRepository;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -18,6 +24,7 @@ import org.springframework.stereotype.Component;
 public class InitData implements CommandLineRunner {
 
     //FIXME: Service를 호출하는것이 바람직함
+    private final UserRepository userRepository;
     private final CompanyRepository companyRepository;
     private final VehicleRepository vehicleRepository;
 
@@ -31,13 +38,24 @@ public class InitData implements CommandLineRunner {
                                 "company" + i,
                                 "address" + i,
                                 "phoneNumber" + i,
-                                "dummy" + i + "@kernel.com",
+                                "company" + i + "@kernel.com",
                                 "더미 회사입니다",
                                 "0000000000" + i,
                                 ContractStatus.ACTIVE
                         ))
                         .toList()
         );
+
+        userRepository.saveAll(
+                LongStream.iterate(1L, i -> i + 1)
+                        .limit(5L)
+                        .mapToObj(i -> new User(
+                                i,
+                                new UserInfo("user" + i + "@kernel.com", "1234" + i, "user" + i, "0101234567" + i),
+                                UserRole.EMPLOYEE,
+                                UserStatus.ACTIVE
+                        ))
+                        .toList());
 
         vehicleRepository.saveAll(
                 IntStream.iterate(1, i -> i + 1)
