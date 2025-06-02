@@ -1,9 +1,12 @@
 package com.pickcar.presentation.controller;
 
+import com.pickcar.application.CycleInfoService;
 import com.pickcar.application.EmulatorService;
 import com.pickcar.application.EventInfoService;
+import com.pickcar.presentation.dto.request.CycleInfoRequest;
 import com.pickcar.presentation.dto.request.EmulatorRequest;
 import com.pickcar.presentation.dto.request.EventInfoRequest;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,11 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1")
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class EmulatorApiController {
 
-    EmulatorService emulatorService;
+    private final EmulatorService emulatorService;
     private final EventInfoService eventInfoService;
+    private final CycleInfoService cycleInfoService;
 
     @PostMapping("/terminal")
     public void emulator(@RequestBody EmulatorRequest request) {
@@ -36,5 +40,11 @@ public class EmulatorApiController {
     public void emulatorEngineOff(@RequestBody EventInfoRequest request) {
         log.info("POST /api/v1/engine/off - EventInfoRequest: {}", request);
         eventInfoService.off(request);
+    }
+
+    @PostMapping("/engine/cycle")
+    public void emulatorCycle(@RequestBody CycleInfoRequest request) {
+        log.info("POST /api/v1/engine/cycle - CycleInfoRequest: {}", request);
+        cycleInfoService.cycle(request);
     }
 }
