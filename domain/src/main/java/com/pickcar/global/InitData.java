@@ -8,11 +8,15 @@ import com.pickcar.auth.infrastructure.UserRepository;
 import com.pickcar.company.domain.Company;
 import com.pickcar.company.domain.ContractStatus;
 import com.pickcar.company.infrastructure.CompanyRepository;
+import com.pickcar.reservation.domain.Reservation;
+import com.pickcar.reservation.domain.ReservationStatus;
+import com.pickcar.reservation.infrastructure.ReservationRepository;
 import com.pickcar.vehicle.domain.FuelType;
 import com.pickcar.vehicle.domain.Vehicle;
 import com.pickcar.vehicle.domain.VehicleInfo;
 import com.pickcar.vehicle.domain.VehicleStatus;
 import com.pickcar.vehicle.infrastructure.VehicleRepository;
+import java.time.LocalDateTime;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +28,10 @@ import org.springframework.stereotype.Component;
 public class InitData implements CommandLineRunner {
 
     //FIXME: Service를 호출하는것이 바람직함
-    private final UserRepository userRepository;
     private final CompanyRepository companyRepository;
+    private final UserRepository userRepository;
     private final VehicleRepository vehicleRepository;
+    private final ReservationRepository reservationRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -69,5 +74,16 @@ public class InitData implements CommandLineRunner {
                                 true
                         ))
                         .toList());
+
+        reservationRepository.saveAll(
+                LongStream.iterate(1L, i -> i + 1)
+                        .limit(5)
+                        .mapToObj(i -> new Reservation(
+                                i,
+                                i,
+                                LocalDateTime.now(),
+                                null,
+                                ReservationStatus.RESERVED
+                        )).toList());
     }
 }
