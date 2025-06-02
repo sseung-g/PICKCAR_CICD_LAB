@@ -35,7 +35,13 @@ public class InitData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        initDummyCompanies();
+        initDummyUsers();
+        initDummyVehicles();
+        initDummyReservations();
+    }
 
+    private void initDummyCompanies() {
         companyRepository.saveAll(
                 IntStream.iterate(1, i -> i + 1)
                         .limit(5)
@@ -50,7 +56,9 @@ public class InitData implements CommandLineRunner {
                         ))
                         .toList()
         );
+    }
 
+    private void initDummyUsers() {
         userRepository.saveAll(
                 LongStream.iterate(1L, i -> i + 1)
                         .limit(5L)
@@ -61,7 +69,9 @@ public class InitData implements CommandLineRunner {
                                 UserStatus.ACTIVE
                         ))
                         .toList());
+    }
 
+    private void initDummyVehicles() {
         vehicleRepository.saveAll(
                 IntStream.iterate(1, i -> i + 1)
                         .limit(10)
@@ -74,7 +84,9 @@ public class InitData implements CommandLineRunner {
                                 true
                         ))
                         .toList());
+    }
 
+    private void initDummyReservations() {
         reservationRepository.saveAll(
                 LongStream.iterate(1L, i -> i + 1)
                         .limit(5)
