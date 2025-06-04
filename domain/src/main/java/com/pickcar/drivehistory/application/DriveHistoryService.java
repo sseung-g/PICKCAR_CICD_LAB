@@ -4,7 +4,7 @@ import com.pickcar.application.CycleInfoService;
 import com.pickcar.application.EventInfoService;
 import com.pickcar.auth.application.UserService;
 import com.pickcar.auth.domain.User;
-import com.pickcar.domain.CycleInfo;
+import com.pickcar.domain.Cycle;
 import com.pickcar.domain.EventInfo;
 import com.pickcar.drivehistory.domain.DriveHistory;
 import com.pickcar.drivehistory.infrastructure.DriveHistoryRepository;
@@ -14,9 +14,7 @@ import com.pickcar.vehicle.application.VehicleService;
 import com.pickcar.vehicle.domain.Vehicle;
 import java.time.Duration;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -43,7 +41,7 @@ public class DriveHistoryService {
         Double totalDistance = 0D;
 
         EventInfo offEventInfo = eventInfoService.getLatestOffEventInfoByVehicleId(vehicle.getId());
-        List<CycleInfo> cycleInfos = cycleInfoService.getCycleInfosByOffEventInfo(offEventInfo);
+        List<Cycle> cycles = cycleInfoService.getCycleInfosByOffEventInfo(offEventInfo);
 
         DriveHistory history = DriveHistory.builder()
                 .drivingStartedAt(offEventInfo.getEngineOnTime())
