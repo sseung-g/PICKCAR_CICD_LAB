@@ -12,29 +12,25 @@ export default function () {
         {
             url: 'http://localhost:8080/api/v1/event/engine/on',
             payload: JSON.stringify({
-                car_id: 1,
+                vehicle_id: 1,
                 mdn: "01234567890",
                 status: true,
                 engine_on_time: "20240601123000",
                 engine_off_time: "",
                 gps_status: "NORMAL",
                 latitude: 37.4418038,
-                longitude: 12.7244003,
-                angle: 90,
-                speed: 30,
-                total_distance: 10000
+                longitude: 12.7244003
             })
         },
         {
             url: 'http://localhost:8080/api/v1/cycle',
             payload: JSON.stringify({
-                car_id: 1,
+                vehicle_id: 1,
                 cycle_cnt: 60,
-                occurred_at: "20240601123000",
+                occurred_at: "20240601123001",
                 distance: 10590,
-                cycle_infos: {
-                    "0": {
-                        "car_id": 1,
+                cycle_infos: [
+                    {
                         "second": "20240601123001",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418038,
@@ -43,8 +39,7 @@ export default function () {
                         "speed": 30,
                         "battery": 128
                     },
-                    "1": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123002",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418039,
@@ -53,8 +48,7 @@ export default function () {
                         "speed": 31,
                         "battery": 128
                     },
-                    "2": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123003",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418040,
@@ -63,8 +57,7 @@ export default function () {
                         "speed": 32,
                         "battery": 128
                     },
-                    "3": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123004",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418041,
@@ -73,8 +66,7 @@ export default function () {
                         "speed": 33,
                         "battery": 128
                     },
-                    "4": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123005",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418042,
@@ -83,8 +75,7 @@ export default function () {
                         "speed": 34,
                         "battery": 128
                     },
-                    "5": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123006",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418043,
@@ -93,8 +84,7 @@ export default function () {
                         "speed": 35,
                         "battery": 128
                     },
-                    "6": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123007",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418044,
@@ -103,8 +93,7 @@ export default function () {
                         "speed": 36,
                         "battery": 128
                     },
-                    "7": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123008",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418045,
@@ -113,8 +102,7 @@ export default function () {
                         "speed": 37,
                         "battery": 128
                     },
-                    "8": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123009",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418046,
@@ -123,8 +111,7 @@ export default function () {
                         "speed": 38,
                         "battery": 128
                     },
-                    "9": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123010",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418047,
@@ -133,8 +120,7 @@ export default function () {
                         "speed": 39,
                         "battery": 128
                     },
-                    "10": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123011",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418048,
@@ -143,8 +129,7 @@ export default function () {
                         "speed": 40,
                         "battery": 128
                     },
-                    "11": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123012",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418049,
@@ -153,8 +138,7 @@ export default function () {
                         "speed": 41,
                         "battery": 128
                     },
-                    "12": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123013",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418050,
@@ -163,8 +147,7 @@ export default function () {
                         "speed": 42,
                         "battery": 128
                     },
-                    "13": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123014",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418051,
@@ -173,8 +156,7 @@ export default function () {
                         "speed": 43,
                         "battery": 128
                     },
-                    "14": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123015",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418052,
@@ -183,8 +165,7 @@ export default function () {
                         "speed": 44,
                         "battery": 128
                     },
-                    "15": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123016",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418053,
@@ -193,8 +174,7 @@ export default function () {
                         "speed": 45,
                         "battery": 128
                     },
-                    "16": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123017",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418054,
@@ -203,8 +183,7 @@ export default function () {
                         "speed": 46,
                         "battery": 128
                     },
-                    "17": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123018",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418055,
@@ -213,8 +192,7 @@ export default function () {
                         "speed": 47,
                         "battery": 128
                     },
-                    "18": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123019",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418056,
@@ -223,8 +201,7 @@ export default function () {
                         "speed": 48,
                         "battery": 128
                     },
-                    "19": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123020",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418057,
@@ -233,8 +210,7 @@ export default function () {
                         "speed": 49,
                         "battery": 128
                     },
-                    "20": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123021",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418058,
@@ -243,8 +219,7 @@ export default function () {
                         "speed": 50,
                         "battery": 128
                     },
-                    "21": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123022",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418059,
@@ -253,8 +228,7 @@ export default function () {
                         "speed": 51,
                         "battery": 128
                     },
-                    "22": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123023",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418060,
@@ -263,8 +237,7 @@ export default function () {
                         "speed": 52,
                         "battery": 128
                     },
-                    "23": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123024",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418061,
@@ -273,8 +246,7 @@ export default function () {
                         "speed": 53,
                         "battery": 128
                     },
-                    "24": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123025",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418062,
@@ -283,8 +255,7 @@ export default function () {
                         "speed": 54,
                         "battery": 128
                     },
-                    "25": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123026",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418063,
@@ -293,8 +264,7 @@ export default function () {
                         "speed": 55,
                         "battery": 128
                     },
-                    "26": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123027",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418064,
@@ -303,8 +273,7 @@ export default function () {
                         "speed": 56,
                         "battery": 128
                     },
-                    "27": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123028",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418065,
@@ -313,8 +282,7 @@ export default function () {
                         "speed": 57,
                         "battery": 128
                     },
-                    "28": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123029",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418066,
@@ -323,8 +291,7 @@ export default function () {
                         "speed": 58,
                         "battery": 128
                     },
-                    "29": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123030",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418067,
@@ -333,8 +300,7 @@ export default function () {
                         "speed": 59,
                         "battery": 128
                     },
-                    "30": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123031",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418068,
@@ -343,8 +309,7 @@ export default function () {
                         "speed": 60,
                         "battery": 128
                     },
-                    "31": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123032",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418069,
@@ -353,8 +318,7 @@ export default function () {
                         "speed": 61,
                         "battery": 128
                     },
-                    "32": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123033",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418070,
@@ -363,8 +327,7 @@ export default function () {
                         "speed": 62,
                         "battery": 128
                     },
-                    "33": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123034",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418071,
@@ -373,8 +336,7 @@ export default function () {
                         "speed": 63,
                         "battery": 128
                     },
-                    "34": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123035",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418072,
@@ -383,8 +345,7 @@ export default function () {
                         "speed": 64,
                         "battery": 128
                     },
-                    "35": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123036",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418073,
@@ -393,8 +354,7 @@ export default function () {
                         "speed": 65,
                         "battery": 128
                     },
-                    "36": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123037",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418074,
@@ -403,8 +363,7 @@ export default function () {
                         "speed": 66,
                         "battery": 128
                     },
-                    "37": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123038",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418075,
@@ -413,8 +372,7 @@ export default function () {
                         "speed": 67,
                         "battery": 128
                     },
-                    "38": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123039",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418076,
@@ -423,8 +381,7 @@ export default function () {
                         "speed": 68,
                         "battery": 128
                     },
-                    "39": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123040",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418077,
@@ -433,8 +390,7 @@ export default function () {
                         "speed": 69,
                         "battery": 128
                     },
-                    "40": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123041",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418078,
@@ -443,8 +399,7 @@ export default function () {
                         "speed": 70,
                         "battery": 128
                     },
-                    "41": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123042",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418079,
@@ -453,8 +408,7 @@ export default function () {
                         "speed": 71,
                         "battery": 128
                     },
-                    "42": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123043",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418080,
@@ -463,8 +417,7 @@ export default function () {
                         "speed": 72,
                         "battery": 128
                     },
-                    "43": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123044",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418081,
@@ -473,8 +426,7 @@ export default function () {
                         "speed": 73,
                         "battery": 128
                     },
-                    "44": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123045",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418082,
@@ -483,8 +435,7 @@ export default function () {
                         "speed": 74,
                         "battery": 128
                     },
-                    "45": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123046",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418083,
@@ -493,8 +444,7 @@ export default function () {
                         "speed": 75,
                         "battery": 128
                     },
-                    "46": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123047",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418084,
@@ -503,8 +453,7 @@ export default function () {
                         "speed": 76,
                         "battery": 128
                     },
-                    "47": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123048",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418085,
@@ -513,8 +462,7 @@ export default function () {
                         "speed": 77,
                         "battery": 128
                     },
-                    "48": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123049",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418086,
@@ -523,8 +471,7 @@ export default function () {
                         "speed": 78,
                         "battery": 128
                     },
-                    "49": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123050",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418087,
@@ -533,8 +480,7 @@ export default function () {
                         "speed": 79,
                         "battery": 128
                     },
-                    "50": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123051",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418088,
@@ -543,8 +489,7 @@ export default function () {
                         "speed": 0,
                         "battery": 128
                     },
-                    "51": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123052",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418089,
@@ -553,8 +498,7 @@ export default function () {
                         "speed": 1,
                         "battery": 128
                     },
-                    "52": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123053",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418090,
@@ -563,8 +507,7 @@ export default function () {
                         "speed": 2,
                         "battery": 128
                     },
-                    "53": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123054",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418091,
@@ -573,8 +516,7 @@ export default function () {
                         "speed": 3,
                         "battery": 128
                     },
-                    "54": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123055",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418092,
@@ -583,8 +525,7 @@ export default function () {
                         "speed": 4,
                         "battery": 128
                     },
-                    "55": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123056",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418093,
@@ -593,8 +534,7 @@ export default function () {
                         "speed": 5,
                         "battery": 128
                     },
-                    "56": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123057",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418094,
@@ -603,8 +543,7 @@ export default function () {
                         "speed": 6,
                         "battery": 128
                     },
-                    "57": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123058",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418095,
@@ -613,8 +552,7 @@ export default function () {
                         "speed": 7,
                         "battery": 128
                     },
-                    "58": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123059",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418096,
@@ -623,8 +561,7 @@ export default function () {
                         "speed": 8,
                         "battery": 128
                     },
-                    "59": {
-                        "car_id": 1,
+                    {
                         "second": "20240601123100",
                         "gps_status": "NORMAL",
                         "latitude": 37.4418097,
@@ -633,23 +570,20 @@ export default function () {
                         "speed": 9,
                         "battery": 128
                     }
-                }
+                ]
             })
         },
         {
             url: 'http://localhost:8080/api/v1/event/engine/off',
             payload: JSON.stringify({
-                car_id: 1,
+                vehicle_id: 1,
                 mdn: "01234567890",
                 status: false,
                 engine_on_time: "20240601123000",
                 engine_off_time: "20240601123100",
                 gps_status: "NORMAL",
                 latitude: 37.4418097,
-                longitude: 12.7244062,
-                angle: 270,
-                speed: 0,
-                total_distance: 10590
+                longitude: 12.7244062
             })
         }
     ];

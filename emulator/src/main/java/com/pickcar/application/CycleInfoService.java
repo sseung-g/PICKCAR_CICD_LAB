@@ -16,9 +16,10 @@ public class CycleInfoService {
 
     public void cycle(CycleInfoRequest request) {
         Cycle cycleInfo = Cycle.builder()
-                .carId(request.getCarId())
+                .vehicleId(request.getVehicleId())
                 .occurredAt(request.getOccurredAt())
                 .cycleCnt(request.getCycleCnt())
+                .distance(request.getDistance())
                 .cycleInfos(request.getCycleInfos())
                 .build();
         cycleInfoRepository.save(cycleInfo);
