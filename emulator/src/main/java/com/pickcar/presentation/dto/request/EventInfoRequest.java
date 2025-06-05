@@ -15,8 +15,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EventInfoRequest {
 
-    @JsonProperty("car_id")
-    private Long carId;
+    @JsonProperty("vehicle_id")
+    private Long vehicleId;
 
     private Boolean status;
 
@@ -34,11 +34,4 @@ public class EventInfoRequest {
     private Double latitude;
 
     private Double longitude;
-
-    private Integer angle;
-
-    private Integer speed;
-
-    @JsonProperty("total_distance")
-    private Integer totalDistance;
 }
