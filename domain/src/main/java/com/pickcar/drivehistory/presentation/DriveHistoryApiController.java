@@ -29,7 +29,6 @@ public class DriveHistoryApiController implements DriveHistoryApiDocs {
 
     @PostMapping("/{offEventInfoId}")
     public ResponseEntity<Void> write(@PathVariable Long offEventInfoId) {
-        //FIXME: 테스트용 임시 코드
         driveHistoryService.write(offEventInfoId);
         return ResponseEntity.ok().build();
     }
