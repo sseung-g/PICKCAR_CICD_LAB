@@ -2,6 +2,7 @@ package com.pickcar.drivehistory.presentation;
 
 import com.pickcar.drivehistory.application.DriveHistoryService;
 import com.pickcar.drivehistory.presentation.dto.response.DriveHistoryAllListResponse;
+import com.pickcar.drivehistory.presentation.dto.response.DriveHistoryDetailResponse;
 import com.pickcar.drivehistory.presentation.dto.response.ExampleResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -43,4 +44,10 @@ public class DriveHistoryApiController implements DriveHistoryApiDocs {
         return ResponseEntity.ok().body(responses);
     }
 
+    @GetMapping("/{historyId}/detail")
+    public ResponseEntity<DriveHistoryDetailResponse> detail(@PathVariable Long historyId) {
+        log.info("Requesting detail for historyId: {}", historyId);
+        DriveHistoryDetailResponse response = driveHistoryService.getDetailResponseById(historyId);
+        return ResponseEntity.ok().body(response);
+    }
 }
