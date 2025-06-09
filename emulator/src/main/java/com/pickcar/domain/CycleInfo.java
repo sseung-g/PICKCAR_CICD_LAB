@@ -2,6 +2,8 @@ package com.pickcar.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import java.time.LocalDateTime;
 import lombok.Getter;
 
@@ -9,18 +11,19 @@ import lombok.Getter;
 public class CycleInfo {
 
     @JsonFormat(pattern = "yyyyMMddHHmmss")
-    LocalDateTime second;
+    private LocalDateTime second;
 
     @JsonProperty("gps_status")
-    GpsStatus gpsStatus;
+    @Enumerated(EnumType.STRING)
+    private GpsStatus gpsStatus;
 
-    Double latitude;
+    private Double latitude;
 
-    Double longitude;
+    private Double longitude;
 
-    Integer angle;
+    private Integer angle;
 
-    Integer speed;
+    private Integer speed;
 
-    Integer battery;
+    private Integer battery;
 }
