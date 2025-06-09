@@ -1,6 +1,8 @@
 package com.pickcar.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,15 +32,10 @@ public class EventInfo {
 
     private LocalDateTime engineOffTime;
 
+    @Enumerated(EnumType.STRING)
     private GpsStatus gpsStatus;
 
     private Double latitude;
 
     private Double longitude;
-
-    private Integer angle;
-
-    private Integer speed;
-
-    private Integer total_distance;
 }
