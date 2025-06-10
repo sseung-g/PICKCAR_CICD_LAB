@@ -2,6 +2,7 @@ package com.pickcar.mq.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CyclePayload {
+public class CyclePayload implements Serializable {
     @JsonProperty("vehicle_id")
     private Long vehicleId;
 
