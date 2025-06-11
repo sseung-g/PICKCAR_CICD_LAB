@@ -16,7 +16,8 @@ public class EventMessageListener {
     public void cycleMessage(EventPayload eventPayload) {
         if (eventPayload.getStatus()) {
             eventInfoService.on(eventPayload);
+        } else {
+            eventInfoService.off(eventPayload);
         }
-        eventInfoService.off(eventPayload);
     }
 }
