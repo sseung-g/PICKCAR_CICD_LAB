@@ -1,6 +1,8 @@
 package com.pickcar.emulator.application;
 
 import com.pickcar.emulator.domain.EventInfo;
+import com.pickcar.emulator.exception.EventInfoQueryErrorCode;
+import com.pickcar.emulator.exception.EventInfoQueryException;
 import com.pickcar.emulator.infrastructure.EventInfoQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,6 @@ public class EventInfoQueryService {
 
     public EventInfo getById(Long eventInfoId) {
         return eventInfoRepository.findById(eventInfoId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid eventInfoId: " + eventInfoId));
+                .orElseThrow(() -> new EventInfoQueryException(EventInfoQueryErrorCode.NOT_FOUND_BY_ID));
     }
 }
