@@ -56,21 +56,6 @@ public class DriveHistoryService {
                 .orElseThrow(() -> new DriveHistoryException(DriveHistoryErrorCode.NOT_FOUND_BY_ID));
     }
 
-//    //FIXME: 메서드 분리 및 네이밍 수정 필요, 구성 순서도 중요
-//    public void checkCondition(WriteDriveHistoryCommandDto dto) {
-//        if (dto.drivingStartedAt().isAfter(LocalDateTime.now())) {
-//            throw new DriveHistoryException(DriveHistoryErrorCode.START_TIME_BEFORE_NOW);
-//        }
-//
-//        if (dto.drivingEndedAt().isAfter(LocalDateTime.now())) {
-//            throw new DriveHistoryException(DriveHistoryErrorCode.END_TIME_BEFORE_NOW);
-//        }
-//
-//        if (dto.drivingEndedAt().isBefore(dto.drivingStartedAt())) {
-//            throw new DriveHistoryException(DriveHistoryErrorCode.END_TIME_BEFORE_START_TIME);
-//        }
-//    }
-
     public List<DriveHistoryAllListResponse> getAllList() {
         List<DriveHistoryAllListResponse> responses = new ArrayList<>();
         List<DriveHistory> histories = getAll30DaysList();
