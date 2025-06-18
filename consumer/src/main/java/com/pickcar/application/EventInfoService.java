@@ -1,8 +1,8 @@
 package com.pickcar.application;
 
+import com.pickcar.dto.EventPayload;
 import com.pickcar.emulator.domain.EventInfo;
 import com.pickcar.infrastructure.EventInfoRepository;
-import com.pickcar.mq.dto.EventPayload;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
