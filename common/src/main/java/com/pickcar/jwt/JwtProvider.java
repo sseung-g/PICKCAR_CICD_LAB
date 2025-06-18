@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Component
 public class JwtProvider {
-    //@Value("${jwt.secret}") TODO: 토큰 변수처리
+    //@Value("${jwt.secret}") TODO: secret 변수처리
     private String secret = "ZsR872u9NukGnsjbY5olgyIPZTErn82NETmxjpozaS4=";
 
     //TODO: 토큰 시간 변경

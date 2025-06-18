@@ -11,6 +11,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 public class UserPrincipal { //TODO: 제거하기
     private final Long id;
+    private final String name;
 //    private final Long companyId;
     private final String role;
 }

@@ -21,57 +21,42 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-//    @Transactional
-//    public void create(Long companyId, UserRole role) {
-//
-//        //FIXME: 리팩토링으로 책임 분리
-//        if (role.equals(UserRole.SUPER_ADMIN)) {
-//            throw new IllegalArgumentException("[ERROR] User Can't be a Super Admin");
-//        }
-//
-//        User user = User.builder()
-//                .companyId(1L)      //TODO: 있는지 검사 필요
-//                .info(new UserInfo("email", "password", "name", "phone")) // FIXME
-//                .status(UserStatus.ACTIVE)
-//                .role(role)
-//                .build();
-//
-//        userRepository.save(user);
-//    }
-
     public User getById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] User Not Found By Id " + id));
     }
 
     @Transactional
-    public void createEmployee(@AuthenticationPrincipal UserPrincipal principal,
-                               UserInfoRequest request) {
-        //토큰에 있는 회사ID 사용
-        User employee = User.builder()
-                .companyId(principal.getCompanyId())
-                .info(toEncodedUserInfo(request))
+    public void createEmployee(UserInfoRequest request) {
+        checkDuplicateEmail(request.email());
+        User user = User.builder()
+                .info(toUserInfoWithEncodedPassword(request))
                 .role(UserRole.EMPLOYEE)
                 .status(UserStatus.ACTIVE)
                 .build();
 
-        userRepository.save(employee);
+        userRepository.save(user);
     }
 
     @Transactional
-    public void createAdmin(UserInfoRequest request) {
-        //요청에 있는 회사ID 사용
+    public void createSuperAdmin(UserInfoRequest request) {
+        checkDuplicateEmail(request.email());
         User admin = User.builder()
-                .companyId(request.companyId())
-                .info(toEncodedUserInfo(request))
-                .role(UserRole.ADMIN)
+                .info(toUserInfoWithEncodedPassword(request))
+                .role(UserRole.SUPER_ADMIN)
                 .status(UserStatus.ACTIVE)
                 .build();
 
         userRepository.save(admin);
     }
 
-    private UserInfo toEncodedUserInfo(UserInfoRequest request) {
+    private void checkDuplicateEmail(String email){ //TODO: 예외처리 하기
+        if(userRepository.existsByInfoEmail(email)){
+            throw new IllegalArgumentException("이미 사용 중인 email 입니다.");
+        }
+    }
+
+    private UserInfo toUserInfoWithEncodedPassword(UserInfoRequest request) {
         return new UserInfo(
                 request.email(),
                 passwordEncoder.encode(request.password()),

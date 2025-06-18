@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,6 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -31,11 +33,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             //2. 토큰에 담긴 정보 추출
             Claims claims = jwtProvider.parseToken(token);
             Long id = Long.valueOf(claims.getSubject());
-            Long companyId = claims.get("companyId", Long.class);
+            String name = claims.get("name", String.class);
             String role = claims.get("role", String.class);
 
             //3. 로그인한 사용자의 ID와 role을 담은 객체 생성
-            UserPrincipal principal = new UserPrincipal(id, companyId, role);
+            UserPrincipal principal = new UserPrincipal(id, name, role);
 
             //4. 인증 객체 생성 (setAuthenticated 인증 성공 여부 true)
             Authentication auth = new UsernamePasswordAuthenticationToken(
