@@ -10,6 +10,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @SpringBootApplication
 public class ProducerApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ProducerApplication.class, args);  // ✅ 여기 수정
+        SpringApplication.run(ProducerApplication.class, args);
     }
 }
