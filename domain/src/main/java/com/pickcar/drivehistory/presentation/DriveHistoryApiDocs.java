@@ -1,15 +1,11 @@
 package com.pickcar.drivehistory.presentation;
 
-import com.pickcar.drivehistory.exception.DriveHistoryErrorCode;
 import com.pickcar.drivehistory.presentation.dto.response.DriveHistoryAllListResponse;
 import com.pickcar.drivehistory.presentation.dto.response.DriveHistoryDetailResponse;
-import com.pickcar.drivehistory.presentation.dto.response.ExampleResponse;
-import com.pickcar.swagger.annotation.ApiErrorCodeExample;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
