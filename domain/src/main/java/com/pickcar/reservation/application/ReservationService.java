@@ -51,21 +51,46 @@ public class ReservationService {
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] Reservation Not Found By Id " + id));
     }
 
-    public Reservation getActiveReservationByVehicleId(Long vehicleId) {
+    public Reservation getActiveReservationForDriveHistory(Long vehicleId) {
+        log.info("자동차 ID를 기반으로 유효한 예약을 조회합니다 : {}", vehicleId);
+
+        try {
+            return getActiveReservation(vehicleId);
+        } catch (ReservationException e) {
+            return getLatestValidReservation(vehicleId);
+            //TODO: 여기서도 찾지 못했다면 어떻게 대처할 것인지
+        }
+    }
+
+    private Reservation getActiveReservation(Long vehicleId) {
+        Optional<Reservation> maybeReservation = reservationRepository.findByVehicleIdAndStatus(vehicleId,
+                ReservationStatus.RESERVED);
+
+        if (maybeReservation.isPresent()) {
+            //FIXME: Optional.get()을 두 번 사용중
+            log.info("활성화 여부로 탐색된 예약 ID : {}", maybeReservation.get().getId());
+            return maybeReservation.get();
+        }
+
+        log.error("활성화된 예약을 찾지 못했습니다. {} 분 기준으로 최근 예약을 탐색합니다.", coolDownMinutes);
+        throw new ReservationException(ReservationErrorCode.NOT_FOUND_ACTIVE_RESERVATION_BY_VEHICLE_ID);
+    }
+
+    private Reservation getLatestValidReservation(Long vehicleId) {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime coolDownMinutesAgo = now.minusMinutes(coolDownMinutes);
 
-        Optional<Reservation> reservation = reservationRepository.findByVehicleIdAndStatus(vehicleId,
-                ReservationStatus.RESERVED);
+        Optional<Reservation> maybeReservation = reservationRepository.findByVehicleIdAndUpdatedAtBetween(
+                vehicleId, coolDownMinutesAgo, now);
 
-        if (reservation.isPresent()) {
-            return reservation.get();
+        if(maybeReservation.isPresent()) {
+            //FIXME: Optional.get()을 두 번 사용중
+            log.info("최근 기반으로 탐색된 예약 ID : {}", maybeReservation.get().getId());
+            return maybeReservation.get();
         }
 
-        log.warn("해당 ID를 가진 활성화된 예약을 찾지 못했습니다. 5분 기준으로 최근 예약을 탐색합니다.");
-
-        return reservationRepository.findByVehicleIdAndUpdatedAtBetween(vehicleId, coolDownMinutesAgo, now).orElseThrow(
-                () -> new ReservationException(ReservationErrorCode.NOT_FOUND_LATEST_UPDATED_RESERVATION));
+        log.error("{} 분 기준으로도 예약 내역을 찾지 못했습니다.", coolDownMinutes);
+        throw new ReservationException(ReservationErrorCode.NOT_FOUND_LATEST_UPDATED_RESERVATION);
     }
 
     public ReservationContext getReservationContextById(Long reservationId) {
