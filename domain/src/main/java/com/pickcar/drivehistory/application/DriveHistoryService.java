@@ -49,11 +49,9 @@ public class DriveHistoryService {
                 .orElseThrow(() -> new DriveHistoryException(DriveHistoryErrorCode.NOT_FOUND_BY_ID));
     }
 
-    public List<DriveHistoryListResponse> getListResponses(DriveHistoryFilterRequest filterRequest) {
+    public List<DriveHistoryListResponse> getFilteredListResponses(DriveHistoryFilterRequest filterRequest) {
         List<DriveHistoryListResponse> responses = new ArrayList<>();
         List<DriveHistory> histories = getFilteredList(filterRequest);
-
-        System.out.println("histories = " + histories);
 
         for (DriveHistory history : histories) {
             // FIXME: N+1 여지 있음 -> histories 기반 List 조회 필요 가능성 있음
@@ -70,9 +68,9 @@ public class DriveHistoryService {
         LocalDateTime from = filterRequest.from();
         LocalDateTime end = filterRequest.end();
 
-        System.out.println("end = " + end);
-        System.out.println("from = " + from);
-        return driveHistoryRepository.findAllByCreatedAtBetween(from, end);
+        return driveHistoryRepository.findAllFilteredListByDriverNameAndDuration(filterRequest.driverName(), from, end);
+
+//        return driveHistoryRepository.findAllByCreatedAtBetween(from, end);
     }
 
     public DriveHistoryDetailResponse getDetailResponseById(Long historyId) {

@@ -40,7 +40,7 @@ public class DriveHistoryApiController implements DriveHistoryApiDocs {
     @ResponseStatus(HttpStatus.OK)
     public List<DriveHistoryListResponse> list(@RequestBody(required = false) DriveHistoryFilterRequest filterRequest) {
         log.info("GET /api/v1/history/list : {} ", filterRequest);
-        return driveHistoryService.getListResponses(filterRequest);
+        return driveHistoryService.getFilteredListResponses(filterRequest);
     }
 
     @Override
