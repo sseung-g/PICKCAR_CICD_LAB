@@ -19,4 +19,15 @@ public class EventInfoQueryService {
         return eventInfoRepository.findById(eventInfoId)
                 .orElseThrow(() -> new EventInfoQueryException(EventInfoQueryErrorCode.NOT_FOUND_BY_ID));
     }
+
+    public EventInfo getOffEventById(Long offEventInfoId) {
+        EventInfo eventInfo = getById(offEventInfoId);
+        
+        //FIXME: eventInfo의 상태를 true/false 말고 Enum으로 처리
+        if(eventInfo.getStatus() == true) {
+            throw new EventInfoQueryException(EventInfoQueryErrorCode.EVENT_STATUS_NOT_OFF);
+        }
+
+        return eventInfo;
+    }
 }

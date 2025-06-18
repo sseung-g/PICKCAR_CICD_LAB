@@ -6,11 +6,13 @@ import com.pickcar.drivehistory.presentation.dto.response.DriveHistoryDetailResp
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -25,9 +27,9 @@ public class DriveHistoryApiController implements DriveHistoryApiDocs {
 
     @Override
     @PostMapping("/{offEventInfoId}")
-    public ResponseEntity<Void> write(@PathVariable Long offEventInfoId) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public void write(@PathVariable Long offEventInfoId) {
         driveHistoryService.write(offEventInfoId);
-        return ResponseEntity.noContent().build();
     }
 
     //관제사용 전체 리스트 조회

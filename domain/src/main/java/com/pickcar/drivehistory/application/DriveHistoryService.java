@@ -42,7 +42,7 @@ public class DriveHistoryService {
 
     @Transactional
     public void write(Long offEventInfoId) {
-        EventInfo offEventInfo = eventInfoQueryService.getById(offEventInfoId);
+        EventInfo offEventInfo = eventInfoQueryService.getOffEventById(offEventInfoId);
         Reservation reservation = reservationService.getActiveReservationForDriveHistory(offEventInfo.getVehicleId());
         Double totalDistance = cycleQueryService.getTotalDistanceForHistory(offEventInfo);
 
