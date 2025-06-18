@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
-public class SuperAdminController {
+public class SuperAdminController { //TODO: 제거하기
     private final SuperAdminService superAdminService;
 
     @PostMapping("/super-admins")

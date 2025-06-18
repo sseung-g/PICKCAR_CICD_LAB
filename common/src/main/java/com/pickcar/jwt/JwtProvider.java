@@ -9,17 +9,18 @@ import java.util.Date;
 
 @Component
 public class JwtProvider {
-    //@Value("${jwt.secret}")
+    //@Value("${jwt.secret}") TODO: 토큰 변수처리
     private String secret = "ZsR872u9NukGnsjbY5olgyIPZTErn82NETmxjpozaS4=";
 
+    //TODO: 토큰 시간 변경
     private static final long EXPIRATION = 1000 * 60 * 60L; // 1시간
 
     //토큰 생성
-    public String generateToken(Long Id, Long companyId, String role) {
+    public String generateToken(Long Id, String name, String role) {
         return Jwts.builder()
                 .setSubject(Id.toString())
+                .claim("name", name)
                 .claim("role", role)
-                .claim("companyId", companyId) // super-admin은 0
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
                 .signWith(SignatureAlgorithm.HS256, secret)

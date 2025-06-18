@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/users")
     public void registerEmployee(@AuthenticationPrincipal UserPrincipal principal,
                                @RequestBody UserInfoRequest request) {
         userService.createEmployee(principal,request);
     }
 
-    @PreAuthorize("hasRole('SUPER_ADMIN')")
+//    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @PostMapping("/admins")
     public void registerAdmin(@RequestBody UserInfoRequest request) {
         userService.createAdmin(request);
