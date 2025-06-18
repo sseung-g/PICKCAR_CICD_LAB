@@ -31,6 +31,7 @@ public class DriveHistoryApiController implements DriveHistoryApiDocs {
     @PostMapping("/{offEventInfoId}")
     @ResponseStatus(HttpStatus.CREATED)
     public void write(@PathVariable Long offEventInfoId) {
+        log.info("POST /api/v1/history/{offEventId} : {} ",offEventInfoId);
         driveHistoryService.write(offEventInfoId);
     }
 
@@ -38,13 +39,14 @@ public class DriveHistoryApiController implements DriveHistoryApiDocs {
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
     public List<DriveHistoryListResponse> list(@RequestBody(required = false) DriveHistoryFilterRequest filterRequest) {
+        log.info("GET /api/v1/history/list : {} ", filterRequest);
         return driveHistoryService.getListResponses(filterRequest);
     }
 
     @Override
     @GetMapping("/{historyId}/detail")
     public ResponseEntity<DriveHistoryDetailResponse> detail(@PathVariable Long historyId) {
-        log.info("Requesting detail for historyId: {}", historyId);
+        log.info("GET /api/v1/history/{historyId}/detail : {} ", historyId);
         DriveHistoryDetailResponse response = driveHistoryService.getDetailResponseById(historyId);
         return ResponseEntity.ok().body(response);
     }
