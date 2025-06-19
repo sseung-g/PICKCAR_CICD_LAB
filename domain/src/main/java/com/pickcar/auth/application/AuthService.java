@@ -2,20 +2,20 @@ package com.pickcar.auth.application;
 
 import com.pickcar.auth.domain.User;
 import com.pickcar.auth.infrastructure.UserRepository;
-import com.pickcar.jwt.JwtProvider;
+import com.pickcar.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService { //TODO: AuthService 로 수정하기
+public class AuthService { 
 
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
     private final PasswordEncoder passwordEncoder;
 
-    public String login(String email, String password) {
+    public String login(String email, String password) { //TODO: 메소드명 변경하기
         User user = findUserByEmail(email);
         validatePassword(password, user.getInfo().getPassword());
         return generateAuthToken(user);

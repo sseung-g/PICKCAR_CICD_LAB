@@ -2,11 +2,8 @@ package com.pickcar.auth.presentation;
 
 import com.pickcar.auth.application.UserService;
 import com.pickcar.auth.presentation.dto.request.UserInfoRequest;
-import com.pickcar.jwt.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

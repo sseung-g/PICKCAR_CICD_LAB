@@ -1,6 +1,5 @@
-package com.pickcar.jwt;
+package com.pickcar.security.principal;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,6 +31,7 @@ public class JwtUserDetails implements UserDetails {
     public String getUsername() {
         return name;
     }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
