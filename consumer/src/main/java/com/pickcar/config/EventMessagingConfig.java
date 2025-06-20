@@ -9,31 +9,31 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class CycleRabbitMQConfig {
+public class EventMessagingConfig {
 
-    @Value("${mq.cycle.queue}")
+    @Value("${mq.event.queue}")
     private String queueName;
 
-    @Value("${mq.cycle.exchange}")
+    @Value("${mq.event.exchange}")
     private String exchange;
 
-    @Value("${mq.cycle.routing-key}")
+    @Value("${mq.event.routing-key}")
     private String routingKey;
 
     @Bean
-    public Queue cycleQueue() {
+    public Queue eventQueue() {
         return new Queue(queueName, true);
     }
 
     @Bean
-    public DirectExchange cycleExchange() {
+    public DirectExchange eventExchange() {
         return new DirectExchange(exchange);
     }
 
     @Bean
-    public Binding cycleBinding(Queue cycleQueue, DirectExchange cycleExchange) {
-        return BindingBuilder.bind(cycleQueue)
-                .to(cycleExchange)
+    public Binding eventBinding(Queue eventQueue, DirectExchange eventExchange) {
+        return BindingBuilder.bind(eventQueue)
+                .to(eventExchange)
                 .with(routingKey);
     }
 }
