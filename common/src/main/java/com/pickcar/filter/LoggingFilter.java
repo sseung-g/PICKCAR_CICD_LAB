@@ -5,10 +5,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+@Slf4j
 @Component
 public class LoggingFilter extends OncePerRequestFilter {
 
@@ -18,6 +21,12 @@ public class LoggingFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
+
+        String traceId = request.getHeader("X-TraceId");
+
+        if (traceId != null) {
+            MDC.put("traceId", traceId);
+        }
 
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
@@ -32,5 +41,7 @@ public class LoggingFilter extends OncePerRequestFilter {
 
         // 이 내용이 있어야 다음 클라이언트가 요청을 받을 수 있음
         responseWrapper.copyBodyToResponse();
+
+        MDC.clear();
     }
 }
