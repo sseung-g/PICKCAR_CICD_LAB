@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
@@ -21,9 +22,6 @@ public class LoggingFilter extends OncePerRequestFilter {
 
     private final LogConfigProps logConfigProps;
 
-//    @Value("${custom.logging.moduleName}")
-//    private String moduleName;
-
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
@@ -36,6 +34,7 @@ public class LoggingFilter extends OncePerRequestFilter {
 
         keepTraceIdIfExist(request);
         putModuleNameToMDC();
+        putServiceNameToMDC(request);
 
         RequestWrapper requestWrapper = new RequestWrapper(request);
         ResponseWrapper responseWrapper = new ResponseWrapper(response);
@@ -67,5 +66,19 @@ public class LoggingFilter extends OncePerRequestFilter {
         }
 
         MDC.put("moduleName", "unknown");
+    }
+
+    private void putServiceNameToMDC(HttpServletRequest request) {
+        String uri = request.getRequestURI();
+
+        String[] split = uri.split("/api/v1/");
+        String[] split1 = split[1].split("/");
+
+        if(split1[0] != null) {
+            MDC.put("service", split1[0]);
+            return;
+        }
+
+        MDC.put("service", "unknown");
     }
 }

@@ -17,12 +17,17 @@ public class EventMessageListener {
     @Value("${custom.logging.moduleName}")
     private String moduleName;
 
+    @Value("${mq.event.queue}")
+    private String queueName;
+
     private final EventInfoService eventInfoService;
 
     @RabbitListener(queues = "${mq.event.queue}")
     public void cycleMessage(EventPayload eventPayload, @Header("traceId") String traceId) {
         MDC.put("traceId", traceId);
         MDC.put("moduleName", moduleName);
+        MDC.put("service", queueName);
+
         log.info("RabbitMQ Listener received event: {}", eventPayload.toString());
         try {
             if (eventPayload.getStatus()) {
