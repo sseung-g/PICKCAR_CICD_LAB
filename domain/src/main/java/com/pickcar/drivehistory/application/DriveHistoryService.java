@@ -54,8 +54,6 @@ public class DriveHistoryService {
         for (DriveHistory history : histories) {
             // FIXME: N+1 여지 있음 -> histories 기반 List 조회 필요 가능성 있음
             ReservationContext context = reservationService.getReservationContextById(history.getReservationId());
-
-            log.info("context : {} ", context);
             DriveHistoryListResponse response = DriveHistoryListResponse.of(history, context);
             responses.add(response);
         }

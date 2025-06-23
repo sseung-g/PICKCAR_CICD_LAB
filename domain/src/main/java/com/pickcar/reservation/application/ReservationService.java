@@ -81,7 +81,6 @@ public class ReservationService {
 
         if (maybeReservation.isPresent()) {
             //FIXME: Optional.get()을 두 번 사용중
-            log.info("최근 기반으로 탐색된 예약 ID : {}", maybeReservation.get().getId());
             return maybeReservation.get();
         }
 
