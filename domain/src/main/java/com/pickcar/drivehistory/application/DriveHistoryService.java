@@ -13,10 +13,13 @@ import com.pickcar.emulator.domain.EventInfo;
 import com.pickcar.reservation.application.ReservationService;
 import com.pickcar.reservation.domain.Reservation;
 import com.pickcar.reservation.presentation.dto.context.ReservationContext;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class DriveHistoryService {
+
+    @Value("${custom.driveHistory.maximumInquiryDays}")
+    private Integer maximumInquiryDays;
 
     private final CycleQueryService cycleQueryService;
     private final EventInfoQueryService eventInfoQueryService;
@@ -48,6 +54,7 @@ public class DriveHistoryService {
     }
 
     public List<DriveHistoryListResponse> getFilteredListResponses(DriveHistoryFilterRequest filterRequest) {
+        checkListFilterRequest(filterRequest);
         List<DriveHistoryListResponse> responses = new ArrayList<>();
         List<DriveHistory> histories = getFilteredList(filterRequest);
 
@@ -60,6 +67,15 @@ public class DriveHistoryService {
             responses.add(response);
         }
         return responses;
+    }
+
+    private void checkListFilterRequest(DriveHistoryFilterRequest filterRequest) {
+        LocalDate today = LocalDate.now();
+        LocalDateTime inquiryLimitDate = today.atStartOfDay().minusDays(maximumInquiryDays);
+
+        if(filterRequest.from().isBefore(inquiryLimitDate)) {
+            throw new DriveHistoryException(DriveHistoryErrorCode.MAXIMUM_INQUIRY_LIMIT_EXCEEDED);
+        }
     }
 
     private List<DriveHistory> getFilteredList(DriveHistoryFilterRequest filterRequest) {
