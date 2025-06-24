@@ -61,19 +61,11 @@ public class DriveHistoryService {
     public Page<DriveHistoryListResponse> getFilteredListResponses(DriveHistoryFilterRequest filterRequest,
                                                                    Pageable pageable) {
         checkListFilterRequest(filterRequest);
+        Page<DriveHistory> filteredHistoryPage = getPageByFilter(filterRequest, pageable);
+        List<Long> reservationIds = getRelatedReservationIdsByPage(filteredHistoryPage);
+        Map<Long, ReservationContext> contextMap = reservationService.getContextMapByIds(reservationIds);
 
-        Page<DriveHistory> historyPage = getFilteredAndPagingList(filterRequest, pageable);
-        List<Long> reservationIds = getRelatedReservationIdsByPage(historyPage);
-
-        Map<Long, ReservationContext> contextMap = reservationService
-                .getReservationContextByIds(reservationIds)
-                .stream()
-                .collect(Collectors.toMap(
-                        ReservationContext::getReservationId,
-                        Function.identity()
-                ));
-
-        List<DriveHistoryListResponse> responses = historyPage.getContent()
+        List<DriveHistoryListResponse> responses = filteredHistoryPage.getContent()
                 .stream()
                 .map(history -> {
                     ReservationContext context = contextMap.get(history.getReservationId());
@@ -81,7 +73,7 @@ public class DriveHistoryService {
                 })
                 .toList();
 
-        return new PageImpl<>(responses, pageable, historyPage.getTotalElements());
+        return new PageImpl<>(responses, pageable, filteredHistoryPage.getTotalElements());
     }
 
     private void checkListFilterRequest(DriveHistoryFilterRequest filterRequest) {
@@ -94,17 +86,15 @@ public class DriveHistoryService {
         }
     }
 
-    private Page<DriveHistory> getFilteredAndPagingList(DriveHistoryFilterRequest filterRequest, Pageable pageable) {
+    private Page<DriveHistory> getPageByFilter(DriveHistoryFilterRequest filterRequest, Pageable pageable) {
         return driveHistoryRepository.findAllFilteredListByDriverNameAndDuration(
-                filterRequest.driverName(),
-                filterRequest.from(),
-                filterRequest.to(),
-                pageable
+                filterRequest.driverName(), filterRequest.from(),
+                filterRequest.to(), pageable
         );
     }
 
-    private List<Long> getRelatedReservationIdsByPage(Page<DriveHistory> historyPage) {
-        return historyPage.getContent()
+    private List<Long> getRelatedReservationIdsByPage(Page<DriveHistory> driveHistoryPage) {
+        return driveHistoryPage.getContent()
                 .stream()
                 .map(DriveHistory::getReservationId)
                 .toList();
