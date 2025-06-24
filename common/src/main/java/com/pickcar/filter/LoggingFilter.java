@@ -6,11 +6,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -22,12 +21,23 @@ public class LoggingFilter extends OncePerRequestFilter {
 
     private final LogConfigProps logConfigProps;
 
+    private static final Set<String> EXCLUDED_PATHS = Set.of(
+            "/swagger-ui",
+            "/actuator/health",
+            "/v3/api-docs"
+    );
+
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
+
+        if(EXCLUDED_PATHS.stream().anyMatch(request.getRequestURI()::startsWith)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         Long startTime = System.currentTimeMillis();
 
