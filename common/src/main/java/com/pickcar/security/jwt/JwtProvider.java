@@ -1,7 +1,6 @@
 package com.pickcar.security.jwt;
 
 import io.jsonwebtoken.*;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

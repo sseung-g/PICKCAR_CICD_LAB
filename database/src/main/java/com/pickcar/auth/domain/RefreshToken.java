@@ -29,10 +29,6 @@ public class RefreshToken extends BaseEntity {
     }
 
     public static RefreshToken create(Long userId, String token, LocalDateTime expiryDate) {
-//        LocalDateTime expiryDate = LocalDateTime.ofInstant(
-//                new Date(System.currentTimeMillis() + validityMillis).toInstant(),
-//                ZoneId.systemDefault()
-//        ); //TODO: 분리하기
         return new RefreshToken(
                 userId,
                 token,
@@ -43,5 +39,9 @@ public class RefreshToken extends BaseEntity {
     public void update(String newToken, LocalDateTime newExpiryDate) {
         this.token = newToken;
         this.expiryDate = newExpiryDate;
+    }
+
+    public boolean isExpired() {
+        return LocalDateTime.now().isAfter(expiryDate);
     }
 }

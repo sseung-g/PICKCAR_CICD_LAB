@@ -1,7 +1,6 @@
 package com.pickcar.auth.presentation;
 
 import com.pickcar.auth.application.AuthService;
-import com.pickcar.auth.presentation.dto.request.AuthRequest;
 import com.pickcar.auth.presentation.dto.response.AccessTokenResponse;
 import com.pickcar.auth.presentation.dto.response.AuthResponse;
 import com.pickcar.security.jwt.JwtConstants;
@@ -11,51 +10,30 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/auth")
-public class AuthController {
+@RequestMapping("/api/v1/token")
+public class TokenController {
 
     private final AuthService authService;
 
-    @PostMapping("/login")
+    @PostMapping("/refresh")
     @ResponseStatus(HttpStatus.OK)
-    public AccessTokenResponse login(@RequestBody AuthRequest request, HttpServletResponse response) {
-        log.info("url : /login");
-        AuthResponse authResponse = authService.login(request.email(), request.password());
-        addRefreshTokenToCookie(response, authResponse.refreshToken());
-        return new AccessTokenResponse(authResponse.accessToken());
-    } //TODO: 로그인 실패 예외처리 추가
-
-
-
-    @PostMapping("/logout")
-    @ResponseStatus(HttpStatus.OK)
-    public void logout(HttpServletRequest request, HttpServletResponse response) {
-        log.info("url : /logout");
+    public AccessTokenResponse reissueRefreshToken(HttpServletRequest request, HttpServletResponse response){
+        log.info("url : /token/refresh");
         String refreshToken = extractRefreshTokenFromCookie(request);
-
-        if (refreshToken != null && !refreshToken.isBlank()) {
-            try {
-                authService.deleteByToken(refreshToken);
-            } catch (Exception e) {
-                log.warn("로그아웃 중 RT 삭제 실패: {}", e.getMessage());
-            }
-        }
-
-        deleteRefreshTokenCookie(response); // 무조건 쿠키는 지움
+        AuthResponse authResponse = authService.newRefreshToken(refreshToken); //TODO: 네이밍 수정
+        addRefreshTokenToCookie(response, authResponse.refreshToken());
+        log.info("new AccessToken : {}",authResponse.accessToken());
+        return new AccessTokenResponse(authResponse.accessToken());
     }
 
-    public void deleteRefreshTokenCookie(HttpServletResponse response) {
-        Cookie cookie = new Cookie("refreshToken", null);
-        cookie.setMaxAge(0);         // 만료 처리
-        cookie.setHttpOnly(true);    // 보안용 httpOnly 설정 유지
-        cookie.setPath("/");         // 쿠키 경로
-        response.addCookie(cookie);  // 응답 헤더에 쿠키 추가 (삭제 명령)
-    }
     private void addRefreshTokenToCookie(HttpServletResponse response,String refreshToken){
         Cookie cookie = new Cookie("refreshToken", refreshToken);
         cookie.setHttpOnly(true);

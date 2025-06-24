@@ -8,15 +8,12 @@ import com.pickcar.auth.presentation.dto.response.AuthResponse;
 import com.pickcar.security.jwt.JwtConstants;
 import com.pickcar.security.jwt.JwtProvider;
 import com.pickcar.security.jwt.JwtUtils;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -40,6 +37,43 @@ public class AuthService {
         saveOrUpdateRefreshToken(user.getId(),refreshToken);
 
         return new AuthResponse(accessToken,refreshToken);
+    }
+
+    @Transactional
+    public AuthResponse newRefreshToken(String refreshToken){
+        // 1. 클라이언트 쿠키에 담긴 Refresh Token(RT)과 DB에 저장된 RT를 비교
+        //    → 동일한지 (재사용 공격 방지)
+
+        //TODO : 변수명, 예외처리 수정하기
+        RefreshToken token = refreshTokenRepository.findByToken(refreshToken)
+                .orElseThrow(() -> new IllegalArgumentException("token이 없음"));
+
+        // 2. DB의 RT가 유효한지 (만료 여부 등) 확인
+        if(token.isExpired()){
+            throw new IllegalStateException("Refresh token has expired.");
+        }
+        
+        //token 유효
+        User user = userRepository.findById(token.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("User not found."));
+
+        // 4. Access/Refresh 토큰 재발급
+        String newAccessToken = generateAccessToken(user);
+        String newRefreshToken = generateRefreshToken(user.getId());
+
+        log.info("새로 발급된 Refresh Token: {}", newRefreshToken);
+
+        // 5. RT 저장/갱신
+        saveOrUpdateRefreshToken(user.getId(), newRefreshToken);
+
+        // 6. 결과 반환
+        return new AuthResponse(newAccessToken, newRefreshToken);
+    }
+
+    @Transactional
+    public void deleteByToken(String token){
+        // Refresh Token 삭제 시도 (있으면 삭제, 없으면 무시)
+        refreshTokenRepository.deleteByToken(token);
     }
 
     private User findUserByEmail(String email){ //TODO: 예외처리 하기
@@ -74,6 +108,7 @@ public class AuthService {
     }
 
     private void saveOrUpdateRefreshToken(Long userId,String refreshToken){
+        //TODO: 해시화 해서 저장하기
         LocalDateTime expiryDate = JwtUtils.calculateExpiryDate(JwtConstants.REFRESH_TOKEN_VALIDITY);
         refreshTokenRepository.findByUserId(userId)
                 .ifPresentOrElse(

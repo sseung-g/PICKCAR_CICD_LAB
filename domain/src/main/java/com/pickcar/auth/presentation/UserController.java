@@ -24,10 +24,8 @@ public class UserController {
 
     @PostMapping("/sign-up")
     public void createUser(@RequestBody UserInfoRequest request) {
+        log.info("url : /sign-up");
         log.info("Request: {}",request);
         userService.createEmployee(request);
     }
-
-//    @PreAuthorize("hasRole('ADMIN')")
-//    @PreAuthorize("hasRole('SUPER_ADMIN')")
 }
