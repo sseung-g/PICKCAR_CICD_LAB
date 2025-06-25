@@ -3,6 +3,7 @@ package com.pickcar.application;
 import com.pickcar.dto.EventPayload;
 import com.pickcar.emulator.domain.EventInfo;
 import com.pickcar.infrastructure.EventInfoRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +32,14 @@ public class EventInfoService {
 
     private EventInfo saveEventInfo(EventPayload request) {
         try {
+            Optional<EventInfo> getEventInfo = eventInfoRepository.findTopByVehicleIdOrderByIdDesc(request.getVehicleId());
+
+            getEventInfo.ifPresent(info -> {
+                if (info.getStatus().equals(request.getStatus())) {
+                    throw new RuntimeException("이미 동일한 상태입니다.");
+                }
+            });
+
             EventInfo eventInfo = toEventInfo(request);
             return eventInfoRepository.save(eventInfo);
         } catch (Exception e) {
