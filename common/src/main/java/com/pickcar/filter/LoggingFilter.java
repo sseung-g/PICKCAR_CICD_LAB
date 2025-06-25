@@ -29,8 +29,8 @@ public class LoggingFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-            @NonNull HttpServletRequest request,
-            @NonNull HttpServletResponse response,
+            HttpServletRequest request,
+            HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
 
@@ -44,7 +44,7 @@ public class LoggingFilter extends OncePerRequestFilter {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
-        RequestWrapper requestWrapper = new RequestWrapper(request);
+        RequestWrapper requestWrapper = new RequestWrapper(request, logConfigProps.getSensitiveFieldAsMap());
         ResponseWrapper responseWrapper = new ResponseWrapper(response);
 
         try {

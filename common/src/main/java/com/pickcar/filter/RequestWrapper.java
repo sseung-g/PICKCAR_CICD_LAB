@@ -1,19 +1,20 @@
 package com.pickcar.filter;
 
-import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Base64;
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
+import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 
 @Slf4j
 public class RequestWrapper extends ContentCachingRequestWrapper {
 
-    public RequestWrapper(HttpServletRequest request) {
+    private final Map<String, List<String>> sensitiveFields;
+
+    public RequestWrapper(HttpServletRequest request, Map<String, List<String>> sensitiveFields) {
         super(request);
+        this.sensitiveFields = sensitiveFields;
     }
 
     protected void loggingRequestAPI() throws IOException {
@@ -36,10 +37,23 @@ public class RequestWrapper extends ContentCachingRequestWrapper {
         String requestBody = this.getContentAsString();
         String requestURI = this.getRequestURI();
 
-        if(!requestURI.contains("/auth") || requestBody.isBlank()) {
+        log.info(sensitiveFields.toString());
+
+        if (!sensitiveFields.containsKey(requestURI)) {
             return requestBody;
         }
 
-        return LogEncryptionHelper.encrypt(requestBody);
+        return maskingPayload(requestBody, sensitiveFields.get(requestURI));
+    }
+
+    private String maskingPayload(String requestBody, List<String> sensitiveFields) {
+        for (String field : sensitiveFields) {
+            requestBody = requestBody.replaceAll(
+                    "\"" + field + "\"\\s*:\\s*\"[^\"]*\"",
+                    "\"" + field + "\":\"****\""
+            );
+        }
+
+        return requestBody;
     }
 }

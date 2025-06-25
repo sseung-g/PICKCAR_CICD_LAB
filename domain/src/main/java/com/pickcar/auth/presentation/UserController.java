@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping("/test")
-    public void test(@RequestBody TestRequest testRequest) {
+    public void test(@RequestBody UserInfoRequest testRequest) {
         return;
     }
 }
