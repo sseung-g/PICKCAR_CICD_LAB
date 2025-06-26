@@ -5,3 +5,6 @@ spring:
 custom:
   logging:
     moduleName: consumer
+    sensitiveFieldRules:
+      - path: "none"
+        fields: ["none"]

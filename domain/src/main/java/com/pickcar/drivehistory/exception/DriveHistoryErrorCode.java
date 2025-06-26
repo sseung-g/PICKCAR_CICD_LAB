@@ -17,9 +17,6 @@ public enum DriveHistoryErrorCode implements BaseErrorCode {
     START_TIME_BEFORE_NOW(HttpStatus.BAD_REQUEST, "DH_400_3", "운행 시작 일시는 현재 시각보다 빠를 수 없습니다."),
     NOT_FOUND_BY_ID(HttpStatus.BAD_REQUEST, "DH_400_4", "해당 ID를 가진 운행일지를 찾을 수 없습니다."),
 
-    //401
-    EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_401_1", "토큰의 유효시간이 만료되었습니다"),
-
     //403(FORBIDDEN)
     TEST_403_ERROR(HttpStatus.FORBIDDEN, "DH_403_1", "테스트용 403 에러");
 

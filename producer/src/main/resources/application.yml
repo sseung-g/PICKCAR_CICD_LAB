@@ -9,3 +9,6 @@ spring:
 custom:
   logging:
     moduleName: producer
+    sensitiveFieldRules:
+      - path: "none"
+        fields: ["none"]

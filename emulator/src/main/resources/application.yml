@@ -9,3 +9,6 @@ spring:
 custom:
   logging:
     moduleName: emulator
+    sensitiveFieldRules:
+      - path: "none"
+        fields: ["none"]
