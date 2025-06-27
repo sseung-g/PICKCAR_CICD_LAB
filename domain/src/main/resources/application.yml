@@ -4,7 +4,7 @@ spring:
 
 custom:
   reservation:
-    coolDownMinutes: 60
+    coolDownMinutes: 30
   logging:
     moduleName: domain
     sensitiveFieldRules:
@@ -20,3 +20,5 @@ custom:
         fields: ["email", "password", "name", "phoneNumber"]
       - path: "/api/v1/auth/test"
         fields: ["email", "password", "name", "phoneNumber"]
+  driveHistory:
+    maximumInquiryDays: 30
