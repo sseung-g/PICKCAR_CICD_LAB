@@ -75,7 +75,7 @@ public class DriveHistoryService {
     }
 
     private void checkFilterRequest(DriveHistoryFilterRequest filterRequest) {
-        checkFilterRequestDate(filterRequest.from(), filterRequest.to());
+        checkFilterRequestDate(filterRequest.getFrom(), filterRequest.getTo());
         //TODO: 검사 추가
     }
 
@@ -94,8 +94,8 @@ public class DriveHistoryService {
 
     private Page<DriveHistory> getPageByFilter(DriveHistoryFilterRequest filterRequest, Pageable pageable) {
         return driveHistoryRepository.findAllFilteredListByDriverNameAndDuration(
-                filterRequest.driverName(), filterRequest.from(),
-                filterRequest.to(), pageable
+                filterRequest.getDriverName(), filterRequest.getFrom(),
+                filterRequest.getTo(), pageable
         );
     }
 
