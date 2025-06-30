@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CycleMessageListener {
 
-    private final SeeService seeService;
+    private final SseService sseService;
 
     @RabbitListener(queues = "${mq.cycle.queue}")
     public void cycleMessage(CyclePayload cyclePayload) {
-        seeService.pushEvent(cyclePayload);
+        sseService.pushEvent(cyclePayload);
     }
 }

@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class SeeService {
+public class SseService {
     private final EmitterRepository emitterRepository;
     private final RedisPublisher redisPublisher;
 
