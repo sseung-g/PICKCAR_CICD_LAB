@@ -40,25 +40,6 @@ public class EmitterRepository {
         }
     }
 
-    public void send(Long vehicleId, Object data) {
-        List<SseEmitter> emitterList = emitters.get(vehicleId);
-        if (emitterList != null) {
-            emitterList.forEach(emitter -> {
-                try {
-                    emitter.send(SseEmitter.event()
-                            .name("vehicle-cycle")
-                            .data(data));
-                    log.info("📡 SSE 전송 성공: vehicleId={}, emitter={}", vehicleId, emitter);
-                } catch (IOException | IllegalStateException e) {
-                    log.warn("🚨 SSE 전송 실패: vehicleId={}, error={}", vehicleId, e.getMessage());
-                    emitter.completeWithError(e);
-                    remove(vehicleId, emitter);
-                }
-            });
-        }
-    }
-
-    // TODO : 삭제할지말지 고민중
     public List<SseEmitter> getEmitters(Long vehicleId) {
         return emitters.getOrDefault(vehicleId, List.of());
     }
