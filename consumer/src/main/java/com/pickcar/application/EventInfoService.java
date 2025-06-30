@@ -17,7 +17,7 @@ public class EventInfoService {
 
     private final RestTemplateConfig restTemplateConfig;
 
-    @Value("${custom.deploy.cycle}")
+    @Value("${custom.deploy.domain}")
     private String deployDomain;
 
     private final EventInfoRepository eventInfoRepository;
@@ -53,6 +53,7 @@ public class EventInfoService {
 
     public void writeDriveHistoryRequestAfterOff(EventInfo offEventInfo) {
         RestTemplate restTemplate = restTemplateConfig.restTemplate();
+        log.info("deployDomain: {}", deployDomain);
         restTemplate.postForEntity(deployDomain + "/api/v1/history/%d".formatted(offEventInfo.getId()),
                 null, Void.class);
     }

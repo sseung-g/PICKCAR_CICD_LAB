@@ -10,6 +10,7 @@ import com.pickcar.drivehistory.presentation.dto.response.DriveHistoryListRespon
 import com.pickcar.emulator.application.CycleQueryService;
 import com.pickcar.emulator.application.EventInfoQueryService;
 import com.pickcar.emulator.domain.EventInfo;
+import com.pickcar.emulator.presentation.context.PathContext;
 import com.pickcar.reservation.application.ReservationService;
 import com.pickcar.reservation.domain.Reservation;
 import com.pickcar.reservation.presentation.dto.context.ReservationContext;
@@ -108,10 +109,10 @@ public class DriveHistoryService {
 
     public DriveHistoryDetailResponse getDetailResponseById(Long historyId) {
         DriveHistory history = getById(historyId);
-        ReservationContext context = reservationService.getReservationContextById(history.getReservationId());
+        ReservationContext reservationContext = reservationService.getReservationContextById(history.getReservationId());
         //FIXME: path를 가져올 수 있는 다른 방법 필요
-        //Cycle cycle = cycleQueryService.getByVehicleId(context.reservedVehicleInfo().getId());
+        List<PathContext> pathContexts = cycleQueryService.getPathsByReservationAndHistory(reservationContext.reservation(), history);
 
-        return DriveHistoryDetailResponse.of(history, context);
+        return DriveHistoryDetailResponse.of(history, reservationContext, pathContexts);
     }
 }
