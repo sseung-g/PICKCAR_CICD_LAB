@@ -4,6 +4,8 @@ import com.pickcar.auth.domain.User;
 import com.pickcar.auth.domain.UserInfo;
 import com.pickcar.auth.domain.UserRole;
 import com.pickcar.auth.domain.UserStatus;
+import com.pickcar.auth.exception.UserErrorCode;
+import com.pickcar.auth.exception.UserException;
 import com.pickcar.auth.infrastructure.UserRepository;
 import com.pickcar.auth.presentation.dto.request.UserInfoRequest;
 import com.pickcar.auth.presentation.dto.response.EmployeeListResponse;
@@ -31,8 +33,9 @@ public class UserService {
 
     @Transactional
     public void create(UserInfoRequest request) {
-        if (userRepository.existsByInfoEmail(request.email())) { //TODO: 예외처리 하기
-            throw new IllegalArgumentException("이미 사용 중인 email 입니다.");
+
+        if (userRepository.existsByInfoEmail(request.email())) {
+            throw new UserException(UserErrorCode.ALREADY_EXIST_EMAIL);
         }
 
         User user = User.builder()
