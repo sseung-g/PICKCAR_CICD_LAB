@@ -40,18 +40,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        log.info("Request Path: {}", request.getRequestURI());
 
         if (EXCLUDE_URLS.stream()
                 .map(patternParser::parse)
                 .anyMatch(pathPattern -> pathPattern.matches(PathContainer.parsePath(request.getRequestURI())))) {
-            log.info("Skipping JWT filter for Path");
             filterChain.doFilter(request, response);
             return;
         }
 
         // AccessToken 추출
-        String accessToken = extractToken(request);
+        String accessToken = extractAccessToken(request);
 
         if(accessToken != null){
             TokenStatus status = jwtProvider.validateToken(accessToken);
@@ -117,10 +115,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
-    private String extractToken(HttpServletRequest request) {
-        String auth = request.getHeader("Authorization");
-        // Bearer 제거한 실제 토큰 값만 반환
-        return (auth != null && auth.startsWith("Bearer ")) ? auth.substring(7) : null;
+    private String extractAccessToken(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null) return null;
+
+        for (Cookie cookie : cookies) {
+            if ("accessToken".equals(cookie.getName())) {
+                return cookie.getValue();
+            }
+        }
+
+        return null;
     }
 
     public String extractRefreshTokenFromCookie(HttpServletRequest request) {
