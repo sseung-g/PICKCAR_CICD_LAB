@@ -11,7 +11,8 @@ import java.util.Objects;
 public enum ReservationErrorCode implements BaseErrorCode {
 
     //400(BAD_REQUEST)
-    ALREADY_RESERVED(HttpStatus.BAD_REQUEST, "RS_400_1", "이미 예약된 차량입니다."),
+    EMPLOYEE_ALREADY_RESERVED(HttpStatus.BAD_REQUEST, "RS_400_1", "해당 사원은 이미 할당된 차량이 있습니다."),
+    VEHICLE_ALREADY_RESERVED(HttpStatus.BAD_REQUEST, "RS_400_2", "이미 예약된 차량입니다."),
 
     //404(NOT_FOUND)
     NOT_FOUND_ACTIVE_RESERVATION_BY_VEHICLE_ID(HttpStatus.NOT_FOUND, "RS_404_1", "해당 자동차의 예약 기록을 찾을 수 없습니다."),

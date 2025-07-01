@@ -43,8 +43,14 @@ public class ReservationService {
     @Transactional
     public void reservation(ReservationRequest request) {
 
+        //이미 할당된 차량이 있는 회원에 대해
+        if(hasAlreadyReservation(request.employeeId())) {
+            throw new ReservationException(ReservationErrorCode.EMPLOYEE_ALREADY_RESERVED);
+        }
+
+        //이미 할당처리가 된 차량에 대해
         if(isAlreadyReserved(request.vehicleId())) {
-            throw new ReservationException(ReservationErrorCode.ALREADY_RESERVED);
+            throw new ReservationException(ReservationErrorCode.VEHICLE_ALREADY_RESERVED);
         }
 
         //TODO: 유효성 검사 필요
@@ -171,5 +177,9 @@ public class ReservationService {
 
     private boolean isAlreadyReserved(Long vehicleId) {
         return reservationRepository.findByVehicleIdAndStatus(vehicleId, ReservationStatus.RESERVED).isPresent();
+    }
+
+    private boolean hasAlreadyReservation(Long employeeId) {
+        return reservationRepository.findByUserIdAndStatus(employeeId, ReservationStatus.RESERVED).isPresent();
     }
 }

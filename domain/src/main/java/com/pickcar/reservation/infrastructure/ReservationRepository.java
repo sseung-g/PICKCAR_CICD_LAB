@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
     Optional<Reservation> findByVehicleIdAndStatus(Long vehicleId, ReservationStatus status);
-
+    Optional<Reservation> findByUserIdAndStatus(Long userId, ReservationStatus status);
     Optional<Reservation> findByVehicleIdAndUpdatedAtBetween(Long vehicleId, LocalDateTime from, LocalDateTime to);
 
     @Query("SELECT v FROM Vehicle v " +
