@@ -27,7 +27,6 @@ public class CycleMessagePublisher {
     @Value("${mq.cycle.routing-key}")
     private String routingKey;
 
-    // TODO: publish를 합칠까 고려중
     public void publish(CyclePayload Payload) {
         String key = String.format("%s.%s", routingKey, Payload.getVehicleId());
         try {

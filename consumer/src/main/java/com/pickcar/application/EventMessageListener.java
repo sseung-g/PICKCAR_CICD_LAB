@@ -23,7 +23,7 @@ public class EventMessageListener {
     private final EventInfoService eventInfoService;
 
     @RabbitListener(queues = "${mq.event.queue}")
-    public void cycleMessage(EventPayload eventPayload, @Header("traceId") String traceId) {
+    public void eventMessage(EventPayload eventPayload, @Header("traceId") String traceId) {
         MDC.put("traceId", traceId);
         MDC.put("moduleName", moduleName);
         MDC.put("service", queueName);
@@ -35,6 +35,9 @@ public class EventMessageListener {
             } else {
                 eventInfoService.off(eventPayload);
             }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         } finally {
             MDC.clear();
         }
