@@ -10,9 +10,11 @@ import com.pickcar.reservation.exception.ReservationException;
 import com.pickcar.reservation.infrastructure.ReservationRepository;
 import com.pickcar.reservation.presentation.dto.context.ReservationContext;
 import com.pickcar.reservation.presentation.dto.request.ReservationCreateRequest;
+import com.pickcar.reservation.presentation.dto.response.SearchAbleVehiclesResponse;
 import com.pickcar.vehicle.application.VehicleService;
 import com.pickcar.vehicle.domain.Vehicle;
 import com.pickcar.vehicle.domain.VehicleInfo;
+import com.pickcar.vehicle.domain.VehicleStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -150,5 +152,15 @@ public class ReservationService {
 
     private List<Reservation> getAllByIds(List<Long> reservationIds) {
         return reservationRepository.findAllById(reservationIds);
+    }
+
+    public List<SearchAbleVehiclesResponse> getAbleVehicles() {
+        //운행 가능한 상태의 차면서 예약 상태가 아닌 것
+        List<Vehicle> availableVehicles = reservationRepository.findAvailableVehicles(VehicleStatus.OPERABLE,
+                ReservationStatus.RESERVED);
+
+        return availableVehicles.stream()
+                .map(SearchAbleVehiclesResponse::from)
+                .toList();
     }
 }
