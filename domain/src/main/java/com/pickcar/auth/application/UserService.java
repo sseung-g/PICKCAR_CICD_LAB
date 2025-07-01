@@ -6,7 +6,6 @@ import com.pickcar.auth.domain.UserRole;
 import com.pickcar.auth.domain.UserStatus;
 import com.pickcar.auth.infrastructure.UserRepository;
 import com.pickcar.auth.presentation.dto.request.UserInfoRequest;
-import com.pickcar.jwt.UserPrincipal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
