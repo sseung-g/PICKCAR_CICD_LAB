@@ -5,9 +5,11 @@ import com.pickcar.auth.domain.UserRole;
 import com.pickcar.auth.presentation.dto.request.UserInfoRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -18,6 +20,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/sign-up/admins")
+    @ResponseStatus(HttpStatus.CREATED)
     public void registerAdmin(@RequestBody UserInfoRequest request) {
         log.info("CREATE ADMIN");
         userService.create(request, UserRole.SUPER_ADMIN);
@@ -25,6 +28,7 @@ public class UserController {
 
 
     @PostMapping("/sign-up")
+    @ResponseStatus(HttpStatus.CREATED)
     public void registerEmployee(@RequestBody UserInfoRequest request) {
         log.info("CREATE EMPLOYEE");
         userService.create(request, UserRole.EMPLOYEE);
