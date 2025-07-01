@@ -9,7 +9,7 @@ import com.pickcar.reservation.exception.ReservationErrorCode;
 import com.pickcar.reservation.exception.ReservationException;
 import com.pickcar.reservation.infrastructure.ReservationRepository;
 import com.pickcar.reservation.presentation.dto.context.ReservationContext;
-import com.pickcar.reservation.presentation.dto.request.ReservationCreateRequest;
+import com.pickcar.reservation.presentation.dto.request.ReservationRequest;
 import com.pickcar.reservation.presentation.dto.response.SearchAbleVehiclesResponse;
 import com.pickcar.vehicle.application.VehicleService;
 import com.pickcar.vehicle.domain.Vehicle;
@@ -41,12 +41,12 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
 
     @Transactional
-    public void create(ReservationCreateRequest request) {
+    public void reservation(ReservationRequest request) {
         //TODO: 유효성 검사 필요
         Reservation reservation = Reservation.builder()
                 .userId(request.userId())
                 .vehicleId(request.vehicleId())
-                .rentedAt(request.rentedAt())
+                .rentedAt(LocalDateTime.now())
                 .returnedAt(null)                        //FIXME: 반납 시기를 정하기 VS 반납 했을때를 기록하기
                 .status(ReservationStatus.RESERVED)     //FIXME: Default로 "예약" 상태로 생성?
                 .build();

@@ -1,12 +1,16 @@
 package com.pickcar.reservation.presentation;
 
 import com.pickcar.reservation.application.ReservationService;
+import com.pickcar.reservation.presentation.dto.request.ReservationRequest;
 import com.pickcar.reservation.presentation.dto.response.SearchAbleVehiclesResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -16,14 +20,16 @@ public class ReservationApiController {
 
     private final ReservationService reservationService;
 
-    //FIXME: 로직도 그렇고 사실 VEHICLE이 맞는듯
+    //FIXME: 로직도 그렇고 사실 VEHICLE이 맞는듯 근데 일단 진행
     @GetMapping("/vehicles")
+    @ResponseStatus(HttpStatus.OK)
     public List<SearchAbleVehiclesResponse> searchAbleVehicles() {
         return reservationService.getAbleVehicles();
     }
 
     @PostMapping
-    public void reservation() {
-//        reservationService.reservation();
+    @ResponseStatus(HttpStatus.CREATED)
+    public void reservation(@RequestBody ReservationRequest request) {
+        reservationService.reservation(request);
     }
 }
