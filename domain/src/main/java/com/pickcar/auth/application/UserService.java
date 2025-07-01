@@ -9,7 +9,6 @@ import com.pickcar.auth.presentation.dto.request.UserInfoRequest;
 import com.pickcar.auth.presentation.dto.response.EmployeeListResponse;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,14 +30,14 @@ public class UserService {
     }
 
     @Transactional
-    public void create(UserInfoRequest request, UserRole role) {
-        if(userRepository.existsByInfoEmail(request.email())){ //TODO: 예외처리 하기
+    public void create(UserInfoRequest request) {
+        if (userRepository.existsByInfoEmail(request.email())) { //TODO: 예외처리 하기
             throw new IllegalArgumentException("이미 사용 중인 email 입니다.");
         }
 
         User user = User.builder()
                 .info(toUserInfoWithEncodedPassword(request))
-                .role(role)
+                .role(request.isAdmin()? UserRole.SUPER_ADMIN : UserRole.EMPLOYEE)
                 .status(UserStatus.ACTIVE)
                 .build();
 
@@ -63,9 +62,9 @@ public class UserService {
         List<EmployeeListResponse> responses = new ArrayList<>();
 
         users.forEach(user -> {
-                    EmployeeListResponse response = EmployeeListResponse.from(user);
-                    responses.add(response);
-                });
+            EmployeeListResponse response = EmployeeListResponse.from(user);
+            responses.add(response);
+        });
 
         return responses;
     }

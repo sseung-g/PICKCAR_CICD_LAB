@@ -9,11 +9,13 @@ public record EmployeeListResponse(
         Long userId,
         String name,
         UserStatus status,
-        UserRole role
+        UserRole role,
+        String email
 ) {
 
     public static EmployeeListResponse from(User user) {
         UserInfo info = user.getInfo();
-        return new EmployeeListResponse(user.getId(), info.getName(), user.getStatus(), user.getRole());
+        return new EmployeeListResponse(user.getId(), info.getName(), user.getStatus(), user.getRole(),
+                info.getEmail());
     }
 }
