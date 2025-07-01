@@ -6,7 +6,10 @@ import com.pickcar.auth.domain.UserRole;
 import com.pickcar.auth.domain.UserStatus;
 import com.pickcar.auth.infrastructure.UserRepository;
 import com.pickcar.auth.presentation.dto.request.UserInfoRequest;
+import com.pickcar.auth.presentation.dto.response.EmployeeListResponse;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -53,5 +56,17 @@ public class UserService {
 
     public List<User> getAllByIds(List<Long> userIds) {
         return userRepository.findAllById(userIds);
+    }
+
+    public List<EmployeeListResponse> getAllEmployees() {
+        List<User> users = userRepository.findAllByRole(UserRole.EMPLOYEE);
+        List<EmployeeListResponse> responses = new ArrayList<>();
+
+        users.forEach(user -> {
+                    EmployeeListResponse response = EmployeeListResponse.from(user);
+                    responses.add(response);
+                });
+
+        return responses;
     }
 }
