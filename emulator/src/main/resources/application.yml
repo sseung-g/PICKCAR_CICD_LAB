@@ -1,8 +1,9 @@
+mq:
+  cycle:
+    exchange: exchange-cycle
+    routing-key: cycle.key
+
 spring:
-  thymeleaf:
-    cache: false
-    prefix: 'classpath:/templates/'
-    suffix: '.html'
   profiles:
     active: local
 
