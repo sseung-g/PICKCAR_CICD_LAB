@@ -13,3 +13,10 @@ spring:
     suffix: '.html'
   profiles:
     active: local
+
+custom:
+  logging:
+    moduleName: producer
+    sensitiveFieldRules:
+      - path: "none"
+        fields: ["none"]
