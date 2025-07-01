@@ -7,6 +7,7 @@ import com.pickcar.auth.domain.UserStatus;
 import com.pickcar.auth.infrastructure.UserRepository;
 import com.pickcar.auth.presentation.dto.request.UserInfoRequest;
 import com.pickcar.jwt.UserPrincipal;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,24 +21,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-//    @Transactional
-//    public void create(Long companyId, UserRole role) {
-//
-//        //FIXME: 리팩토링으로 책임 분리
-//        if (role.equals(UserRole.SUPER_ADMIN)) {
-//            throw new IllegalArgumentException("[ERROR] User Can't be a Super Admin");
-//        }
-//
-//        User user = User.builder()
-//                .companyId(1L)      //TODO: 있는지 검사 필요
-//                .info(new UserInfo("email", "password", "name", "phone")) // FIXME
-//                .status(UserStatus.ACTIVE)
-//                .role(role)
-//                .build();
-//
-//        userRepository.save(user);
-//    }
 
     public User getById(Long id) {
         return userRepository.findById(id)
@@ -62,7 +45,7 @@ public class UserService {
     public void createAdmin(UserInfoRequest request) {
         //요청에 있는 회사ID 사용
         User admin = User.builder()
-                .companyId(request.companyId())
+//                .companyId(request.companyId())
                 .info(toEncodedUserInfo(request))
                 .role(UserRole.ADMIN)
                 .status(UserStatus.ACTIVE)
@@ -78,5 +61,9 @@ public class UserService {
                 request.name(),
                 request.phoneNumber()
         );
+    }
+
+    public List<User> getAllByIds(List<Long> userIds) {
+        return userRepository.findAllById(userIds);
     }
 }

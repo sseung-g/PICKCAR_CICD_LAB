@@ -1,4 +1,4 @@
-package com.pickcar.config;
+package com.pickcar.gpx.config;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;

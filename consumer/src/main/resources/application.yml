@@ -9,3 +9,10 @@ mq:
 spring:
   profiles:
     active: local
+
+custom:
+  logging:
+    moduleName: consumer
+    sensitiveFieldRules:
+      - path: "none"
+        fields: ["none"]

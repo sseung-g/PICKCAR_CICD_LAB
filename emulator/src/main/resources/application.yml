@@ -1,3 +1,15 @@
+mq:
+  cycle:
+    exchange: exchange-cycle
+    routing-key: cycle.key
+
 spring:
   profiles:
     active: local
+
+custom:
+  logging:
+    moduleName: emulator
+    sensitiveFieldRules:
+      - path: "none"
+        fields: ["none"]
