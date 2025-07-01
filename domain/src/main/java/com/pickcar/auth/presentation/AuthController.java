@@ -53,6 +53,7 @@ public class AuthController {
     private void setRefreshTokenCookie(HttpServletResponse response, String refreshToken) { //TODO: 자주 사용되서 Util로 빼기
         Cookie cookie = new Cookie("refreshToken", refreshToken);
         cookie.setPath("/");
+        cookie.setHttpOnly(true);
 
         if (refreshToken == null) {
             cookie.setMaxAge(0); // 삭제
@@ -66,6 +67,7 @@ public class AuthController {
     private void setAccessTokenCookie(HttpServletResponse response, String accessToken) { //TODO: 자주 사용되서 Util로 빼기
         Cookie cookie = new Cookie("accessToken", accessToken);
         cookie.setPath("/");
+        cookie.setHttpOnly(true);
 
         if (accessToken == null) {
             cookie.setMaxAge(0); // 삭제
