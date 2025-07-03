@@ -27,6 +27,6 @@ dependencies {
     // Spring Data Commons (Pageable 등)
     api 'org.springframework.data:spring-data-commons'
 
-    // JPA 관련 (DTO에서 Entity 참조할 수 있도록)
-    compileOnly 'jakarta.persistence:jakarta.persistence-api'
+    // JPA 관련 (DTO에서 Entity 참조할 수 있도록) + api로 노출
+    api 'jakarta.persistence:jakarta.persistence-api'
 }

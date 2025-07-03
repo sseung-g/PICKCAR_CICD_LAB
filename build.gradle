@@ -9,6 +9,7 @@ buildscript {
 		mysqlVersion = '8.0.33'
 		junitVersion = '5.10.0'
 		assertjVersion = '3.27.3'
+		lombokVersion = '1.18.30'
 	}
 }
 
@@ -62,8 +63,8 @@ subprojects {
 		testImplementation "org.assertj:assertj-core:${assertjVersion}"
 
 		// 롬복
-		compileOnly 'org.projectlombok:lombok'
-		annotationProcessor 'org.projectlombok:lombok'
+		compileOnly "org.projectlombok:lombok:${lombokVersion}"
+		annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 	}
 
 	tasks.named('test') {
