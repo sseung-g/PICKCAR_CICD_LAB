@@ -57,10 +57,7 @@ public class LoggingFilter extends OncePerRequestFilter {
         ResponseWrapper responseWrapper = new ResponseWrapper(response);
 
         try {
-            keepTraceIdIfExist(request);
-            putModuleNameToMDC();
-            putServiceNameToMDC(request);
-
+            putInfoToMDC(request);
             filterChain.doFilter(requestWrapper, responseWrapper);
         } finally {
             MDC.put("statusCode", String.valueOf(response.getStatus()));
@@ -75,34 +72,25 @@ public class LoggingFilter extends OncePerRequestFilter {
         }
     }
 
+    protected void putInfoToMDC(HttpServletRequest request) {
+        keepTraceIdIfExist(request);
+        putModuleNameToMDC();
+        putServiceNameToMDC(request.getRequestURI());
+    }
+
     private void keepTraceIdIfExist(HttpServletRequest request) {
         String traceId = request.getHeader("X-TraceId");
-
-        if (traceId != null) {
-            MDC.put("traceId", traceId);
-        }
+        MDC.put("traceId", traceId != null ? traceId : "");
     }
 
     private void putModuleNameToMDC() {
         String moduleName = logConfigProps.getModuleName();
-        if(moduleName != null) {
-            MDC.put("moduleName", moduleName);
-            return;
-        }
-
-        MDC.put("moduleName", "unknown");
+        MDC.put("moduleName", moduleName != null ? moduleName : "unknown");
     }
 
-
-    private void putServiceNameToMDC(HttpServletRequest request) {
-        String uri = request.getRequestURI();
-        String serviceName = extractServiceName(uri);
-        MDC.put("service", serviceName);
-    }
-
-    private String extractServiceName(String uri) {
+    private void putServiceNameToMDC(String uri) {
         Pattern pattern = Pattern.compile(API_PREFIX + "\\d+/(^/]+)");
         Matcher matcher = pattern.matcher(uri);
-        return matcher.find() ? matcher.group(1) : "unknown";
+        MDC.put("service", matcher.find() ? matcher.group(1) : "unknown");
     }
 }
