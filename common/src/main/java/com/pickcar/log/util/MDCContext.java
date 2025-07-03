@@ -33,5 +33,4 @@ public class MDCContext {
     public static void clear() {
         MDC.clear();
     }
-
 }
