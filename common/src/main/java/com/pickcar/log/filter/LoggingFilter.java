@@ -25,6 +25,7 @@ public class LoggingFilter extends OncePerRequestFilter {
 
     private final LogConfigProps logConfigProps;
 
+    private static final String API_PREFIX = "/api/v1";
     private static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
     private static final List<String> EXCLUDED_PATTERNS = Arrays.asList(
             "/swagger-ui",
@@ -47,8 +48,6 @@ public class LoggingFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        Long startTime = System.currentTimeMillis();
-
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
@@ -62,9 +61,6 @@ public class LoggingFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(requestWrapper, responseWrapper);
         } finally {
-            Long duration = System.currentTimeMillis() - startTime;
-
-            MDC.put("duration_ms", String.valueOf(duration));
             MDC.put("statusCode", String.valueOf(response.getStatus()));
 
             requestWrapper.loggingRequestAPI();
