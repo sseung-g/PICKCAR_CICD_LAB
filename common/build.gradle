@@ -2,6 +2,10 @@ plugins {
     id 'java-library'
 }
 
+jar {
+    enabled = true
+}
+
 dependencies {
     // 웹 기본
     api 'org.springframework.boot:spring-boot-starter-web'

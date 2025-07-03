@@ -2,6 +2,10 @@ plugins {
     id 'java-library'
 }
 
+jar {
+    enabled = true
+}
+
 dependencies {
     // api로 노출 (다른 모듈에서 Entity 사용)
     api 'org.springframework.boot:spring-boot-starter-data-jpa'
