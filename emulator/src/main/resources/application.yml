@@ -29,6 +29,3 @@ logging:
   sensitive-field-rules:
     - path: "none"
       fields: ["none"]
-
-server:
-  port: 8080
