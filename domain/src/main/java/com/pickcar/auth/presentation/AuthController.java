@@ -1,7 +1,6 @@
 package com.pickcar.auth.presentation;
 
 import com.pickcar.auth.application.AuthService;
-import com.pickcar.auth.application.UserService;
 import com.pickcar.auth.presentation.dto.request.AuthRequest;
 import com.pickcar.auth.presentation.dto.request.UserInfoRequest;
 import com.pickcar.auth.presentation.dto.response.AccessTokenResponse;
@@ -25,7 +24,6 @@ import java.util.List;
 public class AuthController {
 
     private final AuthService authService;
-    private final UserService userService;
 
     @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.CREATED)
