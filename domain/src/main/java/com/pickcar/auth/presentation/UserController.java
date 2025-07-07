@@ -28,16 +28,16 @@ public class UserController {
 //        userService.create(request, UserRole.SUPER_ADMIN);
 //    }
 
-    @PostMapping("/sign-up")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void registerEmployee(@RequestBody UserInfoRequest request) {
-        userService.create(request);
-    }
-
-    @GetMapping("/employees")
-    @ResponseStatus(HttpStatus.OK)
-    public List<EmployeeListResponse> getEmployees() {
-        List<EmployeeListResponse> responses = userService.getAllEmployees();
-        return responses;
-    }
+//    @PostMapping("/sign-up")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public void registerEmployee(@RequestBody UserInfoRequest request) {
+//        userService.create(request);
+//    }
+//
+//    @GetMapping("/employees")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<EmployeeListResponse> getEmployees() {
+//        List<EmployeeListResponse> responses = userService.getAllEmployees();
+//        return responses;
+//    }
 }

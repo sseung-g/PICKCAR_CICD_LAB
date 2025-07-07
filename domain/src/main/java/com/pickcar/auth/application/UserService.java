@@ -26,49 +26,49 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public User getById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("[ERROR] User Not Found By Id " + id));
-    }
+//    public User getById(Long id) {
+//        return userRepository.findById(id)
+//                .orElseThrow(() -> new IllegalArgumentException("[ERROR] User Not Found By Id " + id));
+//    }
 
-    @Transactional
-    public void create(UserInfoRequest request) {
-
-        if (userRepository.existsByInfoEmail(request.email())) {
-            throw new UserException(UserErrorCode.ALREADY_EXIST_EMAIL);
-        }
-
-        User user = User.builder()
-                .info(toUserInfoWithEncodedPassword(request))
-                .role(request.isAdmin()? UserRole.SUPER_ADMIN : UserRole.EMPLOYEE)
-                .status(UserStatus.ACTIVE)
-                .build();
-
-        userRepository.save(user);
-    }
-
-    private UserInfo toUserInfoWithEncodedPassword(UserInfoRequest request) {
-        return new UserInfo(
-                request.email(),
-                passwordEncoder.encode(request.password()),
-                request.name(),
-                request.phoneNumber()
-        );
-    }
-
-    public List<User> getAllByIds(List<Long> userIds) {
-        return userRepository.findAllById(userIds);
-    }
-
-    public List<EmployeeListResponse> getAllEmployees() {
-        List<User> users = userRepository.findAllByRole(UserRole.EMPLOYEE);
-        List<EmployeeListResponse> responses = new ArrayList<>();
-
-        users.forEach(user -> {
-            EmployeeListResponse response = EmployeeListResponse.from(user);
-            responses.add(response);
-        });
-
-        return responses;
-    }
+//    @Transactional
+//    public void create(UserInfoRequest request) {
+//
+//        if (userRepository.existsByInfoEmail(request.email())) {
+//            throw new UserException(UserErrorCode.ALREADY_EXIST_EMAIL);
+//        }
+//
+//        User user = User.builder()
+//                .info(toUserInfoWithEncodedPassword(request))
+//                .role(request.isAdmin()? UserRole.SUPER_ADMIN : UserRole.EMPLOYEE)
+//                .status(UserStatus.ACTIVE)
+//                .build();
+//
+//        userRepository.save(user);
+//    }
+//
+//    private UserInfo toUserInfoWithEncodedPassword(UserInfoRequest request) {
+//        return new UserInfo(
+//                request.email(),
+//                passwordEncoder.encode(request.password()),
+//                request.name(),
+//                request.phoneNumber()
+//        );
+//    }
+//
+//    public List<User> getAllByIds(List<Long> userIds) {
+//        return userRepository.findAllById(userIds);
+//    }
+//
+//    public List<EmployeeListResponse> getAllEmployees() {
+//        List<User> users = userRepository.findAllByRole(UserRole.EMPLOYEE);
+//        List<EmployeeListResponse> responses = new ArrayList<>();
+//
+//        users.forEach(user -> {
+//            EmployeeListResponse response = EmployeeListResponse.from(user);
+//            responses.add(response);
+//        });
+//
+//        return responses;
+//    }
 }
