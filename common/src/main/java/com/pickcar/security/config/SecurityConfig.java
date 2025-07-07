@@ -24,7 +24,7 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    @Value(value = "${custom.deploy.domain}")
+    @Value(value = "${web.cors.allowed-origins}")
     private String deployDomain;
 
     @Bean
