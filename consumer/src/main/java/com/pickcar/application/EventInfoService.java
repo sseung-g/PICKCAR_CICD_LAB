@@ -8,6 +8,8 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -28,9 +30,9 @@ public class EventInfoService {
         saveEventInfo(request);
     }
 
-    public void off(EventPayload request) {
+    public void off(EventPayload request, String accessToken) {
         EventInfo eventInfo = saveEventInfo(request);
-        writeDriveHistoryRequestAfterOff(eventInfo);
+        writeDriveHistoryRequestAfterOff(eventInfo, accessToken);
     }
 
     public void returned(EventPayload request) {
@@ -45,7 +47,7 @@ public class EventInfoService {
             getEventInfo.ifPresent(info -> {
                 if (info.getEventStatus().equals(request.getEventStatus())) {
                     log.error("EventInfo 저장 실패: {}", request);
-                    throw new RuntimeException("이미 동일한 상태입니다.");
+                    return;
                 }
             });
 
@@ -70,11 +72,15 @@ public class EventInfoService {
                 .build();
     }
 
-    public void writeDriveHistoryRequestAfterOff(EventInfo offEventInfo) {
+    public void writeDriveHistoryRequestAfterOff(EventInfo offEventInfo, String accessToken) {
         String url = deployDomain + "/api/v1/history/%d".formatted(offEventInfo.getId());
         log.info("driving history request to: {}", url);
         try {
-            restTemplate.postForEntity(url, null, Void.class);
+            log.info("driving history accessToken: {}", accessToken);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set(HttpHeaders.AUTHORIZATION, accessToken);
+            HttpEntity<String> request = new HttpEntity<>(headers);
+            restTemplate.postForEntity(url, request, Void.class);
         } catch (Exception e) {
             log.error("EventInfo 전송 실패: {}", e.getMessage(), e);
         }

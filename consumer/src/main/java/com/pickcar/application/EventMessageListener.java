@@ -24,7 +24,7 @@ public class EventMessageListener {
     private final EventInfoService eventInfoService;
 
     @RabbitListener(queues = "${mq.event.queue}")
-    public void eventMessage(EventPayload eventPayload, @Header("traceId") String traceId) {
+    public void eventMessage(EventPayload eventPayload, @Header("traceId") String traceId, @Header("accessToken") String accessToken) {
         MDC.put("traceId", traceId);
         MDC.put("moduleName", moduleName);
         MDC.put("service", queueName);
@@ -35,7 +35,7 @@ public class EventMessageListener {
                 log.info("EventStatus ON");
                 eventInfoService.on(eventPayload);
             } else if (EventStatus.OFF.equals(eventPayload.getEventStatus())) {
-                eventInfoService.off(eventPayload);
+                eventInfoService.off(eventPayload, accessToken);
                 log.info("EventStatus OFF");
             } else if (EventStatus.RETURNED.equals(eventPayload.getEventStatus())) {
                 eventInfoService.returned(eventPayload);
