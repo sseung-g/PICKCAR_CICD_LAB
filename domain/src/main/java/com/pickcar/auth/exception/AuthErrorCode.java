@@ -11,7 +11,8 @@ import java.util.Objects;
 public enum AuthErrorCode implements BaseErrorCode {
 
     //400(BAD_REQUEST)
-    ALREADY_EXIST_EMAIL(HttpStatus.BAD_REQUEST, "USER_400_1", "이미 사용중인 이메일 입니다");
+    ALREADY_EXIST_EMAIL(HttpStatus.BAD_REQUEST, "USER_400_1", "이미 사용중인 이메일 입니다"),
+    INVALID_LOGIN_INFO(HttpStatus.BAD_REQUEST, "USER_400_2", "존재하지 않는 계정이거나 비밀번호가 일치하지 않습니다.");
 
     private HttpStatus httpStatus;
     private String errorCode;

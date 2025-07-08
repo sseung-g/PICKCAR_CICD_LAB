@@ -3,20 +3,16 @@ package com.pickcar.auth.application;
 import com.pickcar.auth.domain.*;
 import com.pickcar.auth.exception.AuthErrorCode;
 import com.pickcar.auth.exception.AuthException;
-import com.pickcar.auth.infrastructure.RefreshTokenRepository;
 import com.pickcar.auth.infrastructure.UserRepository;
 import com.pickcar.auth.presentation.dto.request.UserInfoRequest;
 import com.pickcar.auth.presentation.dto.response.AuthResponse;
 import com.pickcar.auth.presentation.dto.response.EmployeeListResponse;
-import com.pickcar.security.jwt.JwtConstants;
 import com.pickcar.security.jwt.JwtProvider;
-import com.pickcar.security.jwt.JwtUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,13 +67,11 @@ public class AuthService {
 
     @Transactional
     public AuthResponse login(String email, String password) {
-        //TODO: 예외처리 하기
         User user = userRepository.findByInfoEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("입력한 이메일이 유효하지 않거나 존재하지 않는 사용자입니다."));
+                .orElseThrow(() ->  new AuthException(AuthErrorCode.INVALID_LOGIN_INFO));
 
-        //TODO: 예외처리 하기
         if (!passwordEncoder.matches(password, user.getInfo().getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new AuthException(AuthErrorCode.INVALID_LOGIN_INFO);
         }
 
         String accessToken = jwtProvider.createAccessToken(
