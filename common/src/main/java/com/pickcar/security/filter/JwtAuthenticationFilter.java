@@ -41,7 +41,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-
         if (EXCLUDE_URLS.stream()
                 .map(patternParser::parse)
                 .anyMatch(pathPattern -> pathPattern.matches(PathContainer.parsePath(request.getRequestURI())))) {
