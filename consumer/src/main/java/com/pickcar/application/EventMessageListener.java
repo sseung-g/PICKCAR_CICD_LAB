@@ -4,9 +4,11 @@ import com.pickcar.constants.GlobalStatic.MDCConstants;
 import com.pickcar.dto.EventPayload;
 import com.pickcar.dto.EventStatus;
 import com.pickcar.log.util.MDCContext;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.handler.annotation.Header;
@@ -26,10 +28,16 @@ public class EventMessageListener {
     private final EventInfoService eventInfoService;
 
     @RabbitListener(queues = "${mq.event.queue}")
-    public void eventMessage(EventPayload eventPayload, @Header(MDCConstants.TRACE_ID_HEADER_KEY) String traceId) {
+    public void eventMessage(EventPayload eventPayload, @Header(MDCConstants.TRACE_ID_HEADER_KEY) String traceId,
+                             @Header(value = "Authorization", required = false) String accessToken,
+                             Message rawMessage) {
         MDC.put(MDCConstants.TRACE_ID_KEY, traceId);
         MDC.put(MDCConstants.MODULE_NAME_KEY, moduleName);
         MDC.put(MDCConstants.SERVICE_NAME_KEY, queueName);
+
+        log.info("Raw Message Headers: {}", rawMessage.getMessageProperties().getHeaders());
+        log.info("컨슈머에서 받은 액세스 토큰 : {}", accessToken);
+        log.info("컨슈머에서 받은 액세스 토큰 : {}", accessToken);
 
         log.info("RabbitMQ Listener received event: {}", eventPayload.toString());
         try {
@@ -40,7 +48,12 @@ public class EventMessageListener {
                 eventInfoService.off(eventPayload);
                 log.info("EventStatus OFF");
             } else if (EventStatus.RETURNED.equals(eventPayload.getEventStatus())) {
-                eventInfoService.returned(eventPayload);
+
+                if (accessToken == null) {
+                    log.warn("반납 요청을 했지만 액세스 토큰이 없어 작업을 진행할 수 없습니다.");
+                    return;
+                }
+                eventInfoService.returned(eventPayload, accessToken);
                 log.info("EventStatus RETURNED");
             }
         } catch (Exception e) {

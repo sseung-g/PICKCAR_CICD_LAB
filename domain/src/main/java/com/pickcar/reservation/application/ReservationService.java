@@ -11,10 +11,12 @@ import com.pickcar.reservation.infrastructure.ReservationRepository;
 import com.pickcar.reservation.presentation.dto.context.ReservationContext;
 import com.pickcar.reservation.presentation.dto.request.ReservationRequest;
 import com.pickcar.reservation.presentation.dto.response.SearchAbleVehiclesResponse;
+import com.pickcar.security.jwt.JwtProvider;
 import com.pickcar.vehicle.application.VehicleService;
 import com.pickcar.vehicle.domain.Vehicle;
 import com.pickcar.vehicle.domain.VehicleInfo;
 import com.pickcar.vehicle.domain.VehicleStatus;
+import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +40,7 @@ public class ReservationService {
 
     private final UserService userService;
     private final VehicleService vehicleService;
+    private final JwtProvider jwtProvider;
     private final ReservationRepository reservationRepository;
 
     @Transactional
@@ -63,6 +66,20 @@ public class ReservationService {
                 .build();
 
         reservationRepository.save(reservation);
+    }
+
+    @Transactional
+    public void submitReturn(HttpServletRequest servletRequest, Long vehicleId) {
+        Long userId = jwtProvider.extractUserId(servletRequest);
+
+        log.info("userId : {}, vehicleId : {}", userId, vehicleId);
+
+        Optional<Reservation> maybeReservation = reservationRepository.findByUserIdAndVehicleId(userId, vehicleId);
+
+        if(maybeReservation.isEmpty()) {
+            //FIXME: 임시 예외 -> 실제 케이스로 변경 필요
+            throw new ReservationException(ReservationErrorCode.NOT_FOUND_ACTIVE_RESERVATION_BY_VEHICLE_ID);
+        }
     }
 
     public Reservation getById(Long id) {
