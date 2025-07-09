@@ -49,12 +49,9 @@ public class EventInfoService {
             Optional<EventInfo> getEventInfo = eventInfoRepository.findTopByVehicleIdOrderByIdDesc(
                     request.getVehicleId());
 
-            getEventInfo.ifPresent(info -> {
-                if (info.getEventStatus().equals(request.getEventStatus())) {
-                    log.error("EventInfo 저장 실패: {}", request);
-                    return;
-                }
-            });
+            if (getEventInfo.isPresent() && getEventInfo.get().getEventStatus().equals(request.getEventStatus())) {
+                throw new IllegalStateException("동일한 EventStatus에 대해 중복 저장 시도");
+            }
 
             EventInfo eventInfo = toEventInfo(request);
             return eventInfoRepository.save(eventInfo);
@@ -81,13 +78,22 @@ public class EventInfoService {
         String url = deployDomain + "/api/v1/history/%d".formatted(offEventInfo.getId());
         try {
             log.info("Request URL : {}, OffEventInfoId : {}", url, offEventInfo.getId());
-            restTemplate.postForEntity(url, null, Void.class);
+            try {
+                restTemplate.postForEntity(url, null, Void.class);
+            } catch (Exception e) {
+                log.warn("히스토리 저장 API 실패, 메시지는 DLQ로 이동, OffEventInfoId : {}", offEventInfo.getId());
+            }
             log.info("시동 OFF에 따른 운행일지 작성이 성공적으로 완료되었습니다. event ID : {}", offEventInfo.getId());
         } catch (HttpClientErrorException e) {
             Optional<ErrorResponse> errorResponse = ErrorResponse.parseHttpStatusCodeException(e);
 
             if (errorResponse.isPresent()) {
-                log.warn("운행일지 작성에 실패하였습니다. reason : {}", errorResponse.get().errorReason().reason());
+                ErrorResponse response = errorResponse.get();
+                if (response.errorReason() != null) {
+                    log.warn("운행일지 작성에 실패하였습니다. reason : {}", response.errorReason().reason());
+                } else {
+                    log.warn("운행일지 작성에 실패하였으나 reason 정보가 누락되었습니다. errorResponse: {}", response);
+                }
                 return;
             }
             log.warn("운행일지 작성과 요청 정보 파싱에 실패하였습니다. responseBody : {}", e.getResponseBodyAsString());
