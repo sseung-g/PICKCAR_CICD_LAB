@@ -35,7 +35,6 @@ public class EventMessagePublisher {
         try {
             rabbitTemplate.convertAndSend(exchange, routingKey, eventPayload, msg -> {
                 if(accessToken != null) {
-                    jwtProvider.validateToken(accessToken);
                     msg.getMessageProperties().setHeader("Authorization", accessToken);
                 }
                 return msg;

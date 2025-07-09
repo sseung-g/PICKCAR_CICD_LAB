@@ -57,7 +57,7 @@ public class EventInfoService {
         } catch(HttpClientErrorException e) {
             Optional<ErrorResponse> errorResponse = ErrorResponse.parseHttpStatusCodeException(e);
             if (errorResponse.isPresent()) {
-                log.warn("반납 처리에 실패하였습니다. reason : {}", errorResponse.get().errorReason().reason());
+                log.warn("반납 처리에 실패하였습니다 : {}", errorResponse.get().errorReason().reason());
                 return;
             }
             log.warn("반납 처리와 요청 정보 파싱에 실패하였습니다. responseBody : {}", e.getResponseBodyAsString());
