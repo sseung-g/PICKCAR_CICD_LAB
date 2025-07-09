@@ -25,5 +25,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             "WHERE v.status = :vehicleStatus " +
             "AND EXISTS (SELECT r FROM Reservation r " +
             "WHERE r.vehicleId = v.id AND r.status = :reservationStatus)")
-    List<Vehicle> findUnavailableVehicles(VehicleStatus vehicleStatus, ReservationStatus reservationStatus);
+    List<Vehicle> findAssignedVehicles(VehicleStatus vehicleStatus, ReservationStatus reservationStatus);
 }
