@@ -19,7 +19,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AuthService { 
+public class AuthService {
 
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;

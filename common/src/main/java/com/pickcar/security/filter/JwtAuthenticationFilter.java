@@ -33,7 +33,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final PathPatternParser patternParser = new PathPatternParser();
 
     private static final List<String> EXCLUDE_URLS = List.of(
-            "/api/v1/auth/**",
+            "/api/v1/auth/sign-up",
+            "/api/v1/auth/login",
+            "/api/v1/auth/logout",
             "/api/v1/token/refresh"
     );
 
@@ -50,6 +52,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // AccessToken 추출
         String accessToken = extractAccessToken(request);
+        log.info("RequestURI : "+ request.getRequestURI() );
+        log.info("accessToken : "+ accessToken);
 
         if(accessToken != null){
             TokenStatus status = jwtProvider.validateToken(accessToken);
@@ -116,16 +120,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String extractAccessToken(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies == null) return null;
-
-        for (Cookie cookie : cookies) {
-            if ("accessToken".equals(cookie.getName())) {
-                return cookie.getValue();
-            }
-        }
-
-        return null;
+        String auth = request.getHeader("Authorization");
+        // Bearer 제거한 실제 토큰 값만 반환
+        return (auth != null && auth.startsWith("Bearer ")) ? auth.substring(7) : null;
     }
 
     public String extractRefreshTokenFromCookie(HttpServletRequest request) {
