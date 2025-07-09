@@ -41,4 +41,8 @@ public class Reservation extends BaseEntity {
         this.status = ReservationStatus.RETURNED;
         this.returnedAt = LocalDateTime.now();
     }
+
+    public void changeToDelayed() {
+        this.status = ReservationStatus.DELAYED;
+    }
 }
