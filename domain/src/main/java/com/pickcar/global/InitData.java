@@ -18,6 +18,7 @@ import com.pickcar.vehicle.domain.Vehicle;
 import com.pickcar.vehicle.domain.VehicleInfo;
 import com.pickcar.vehicle.domain.VehicleStatus;
 import com.pickcar.vehicle.infrastructure.VehicleRepository;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.stream.IntStream;
@@ -104,6 +105,7 @@ public class InitData implements CommandLineRunner {
                                 i,
                                 i,
                                 LocalDateTime.now(),
+                                LocalDate.now().plusDays(50),
                                 null,
                                 ReservationStatus.RESERVED
                         )).toList());
