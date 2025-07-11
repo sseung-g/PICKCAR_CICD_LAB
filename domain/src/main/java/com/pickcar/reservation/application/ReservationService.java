@@ -1,6 +1,6 @@
 package com.pickcar.reservation.application;
 
-import com.pickcar.auth.application.UserService;
+import com.pickcar.auth.application.AuthService;
 import com.pickcar.auth.domain.User;
 import com.pickcar.auth.domain.UserInfo;
 import com.pickcar.reservation.domain.Reservation;
@@ -36,7 +36,7 @@ public class ReservationService {
     @Value(value = "${custom.reservation.cool-down-minutes}")
     private Long coolDownMinutes;
 
-    private final UserService userService;
+    private final AuthService authService;
     private final VehicleService vehicleService;
     private final ReservationRepository reservationRepository;
 
@@ -108,7 +108,7 @@ public class ReservationService {
 
     public ReservationContext getReservationContextById(Long reservationId) {
         Reservation reservation = getById(reservationId);
-        User user = userService.getById(reservation.getUserId());
+        User user = authService.getById(reservation.getUserId());
         Vehicle vehicle = vehicleService.getById(reservation.getVehicleId());
 
         return new ReservationContext(reservation, user.getInfo(), vehicle.getInfo());
@@ -143,7 +143,7 @@ public class ReservationService {
                 .distinct()
                 .toList();
 
-        List<User> users = userService.getAllByIds(userIds);
+        List<User> users = authService.getAllByIds(userIds);
 
         return users.stream()
                 .collect(Collectors.toMap(User::getId, User::getInfo));
