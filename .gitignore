@@ -202,7 +202,4 @@ logs/.promtail-positions.yml
 /docker/docker-compopse.local.yml
 **/application-docker.yml
 Dockerfile
-Dockerfile.consumer
-Dockerfile.domain
-Dockerfile.emulator
-Dockerfile.producer
+docker/produce/**
