@@ -15,6 +15,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 빌드 캐시 github actions 캐시에 저장
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-cache-${{ runner.os }}-${{ github.head_ref }}-${{ github.run_number }}
+          restore-keys: gradle-cache-
+
       # JDK 설치
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -30,9 +40,9 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Upload all JAR artifacts
-        uses: actions/upload-artifact@v4 #GitHub가 공식 제공하는 아티팩트 업로드 액션
-        with:
-          name: jar-files
-          path: |
-            **/build/libs/*.jar
+#      - name: Upload all JAR artifacts
+#        uses: actions/upload-artifact@v4 #GitHub가 공식 제공하는 아티팩트 업로드 액션
+#        with:
+#          name: jar-files
+#          path: |
+#            **/build/libs/*.jar
