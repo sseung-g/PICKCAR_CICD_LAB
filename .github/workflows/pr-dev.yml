@@ -1,6 +1,6 @@
 name: Test Build on dev PR
 
-#dev 브랜치 대상 PR 생성/업데이트 시 실행
+#dev 브랜치 대상 PR 생성 시 실행
 on:
   pull_request:
     branches:
@@ -8,15 +8,31 @@ on:
 
 jobs:
   test-build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest #GitHub에서 제공하는 Ubuntu 최신 버전 가상머신
 
     steps:
+      # 현재 저장소의 코드 가져오기
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Grant execute permission to gradlew
+      # JDK 설치
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin' #OpenJDK의 인기 있는 무료 배포판
+          java-version: '21'
+
+      # Gradle wrapper 실행 권한 부여
+      - name: Grant execute permission for Gradle wrapper
         run: chmod +x ./gradlew
 
-      # 테스트 제외하고 빌드 (TODO: 테스트 수행 시 수정 필요)
+      # 빌드
       - name: Build with Gradle
-        run: ./gradlew clean build -x test
+        run: ./gradlew build
+
+      - name: Upload all JAR artifacts
+        uses: actions/upload-artifact@v3 #GitHub가 공식 제공하는 아티팩트 업로드 액션
+        with:
+          name: jar-files
+          path: |
+            **/build/libs/*.jar
