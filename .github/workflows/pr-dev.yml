@@ -31,7 +31,7 @@ jobs:
         run: ./gradlew build
 
       - name: Upload all JAR artifacts
-        uses: actions/upload-artifact@v3 #GitHub가 공식 제공하는 아티팩트 업로드 액션
+        uses: actions/upload-artifact@v4 #GitHub가 공식 제공하는 아티팩트 업로드 액션
         with:
           name: jar-files
           path: |
