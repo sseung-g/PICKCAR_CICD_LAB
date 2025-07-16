@@ -21,8 +21,8 @@ services:
       redis:
         condition: service_healthy
     volumes:
-      - /home/ec2-user/pickcar-sse-test/emulator-0.0.1-SNAPSHOT.jar:/app/app.jar
-      - /home/ec2-user/pickcar-sse-test/logs:/app/logs
+      - /home/${EC2_USERNAME}/pickcar-sse-test/emulator-0.0.1-SNAPSHOT.jar:/app/app.jar
+      - /home/${EC2_USERNAME}/pickcar-sse-test/logs:/app/logs
       - /pinpoint:/pinpoint
     working_dir: /app
     command: >
@@ -57,9 +57,9 @@ services:
       - "9085:9080"
     command: -config.file=/etc/promtail/config.yml
     volumes:
-      - /home/ec2-user/pickcar-sse-test/promtail-config.yml:/etc/promtail/config.yml
-      - /home/ec2-user/pickcar-sse-test/logs:/app/logs
-      - /home/ec2-user/pickcar-sse-test/promtail:/var/log/promtail
+      - /home/${EC2_USERNAME}/pickcar-sse-test/promtail-config.yml:/etc/promtail/config.yml
+      - /home/${EC2_USERNAME}/pickcar-sse-test/logs:/app/logs
+      - /home/${EC2_USERNAME}/pickcar-sse-test/promtail:/var/log/promtail
     environment:
       - HOSTNAME=${HOSTNAME:-$(hostname)}
       - EC2_INSTANCE_ID=${EC2_INSTANCE_ID:-unknown}

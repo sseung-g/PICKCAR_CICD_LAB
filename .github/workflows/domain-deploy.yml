@@ -24,32 +24,28 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build domain JAR
-#        working-directory: ./domaindd
         run: ./gradlew :domain:clean :domain:build --stacktrace
 
-      - name: Check built files
-        run: ls -al docker/
-
-      - name: Copy JAR and SNAPSHOT to EC2
+      - name: Copy JAR to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
           debug: true
           host: ${{ secrets.DOMAIN_HOST }}
-          username: ec2-user
+          username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_ACTIONS_KEY }}
           source: domain/build/libs/domain-0.0.1-SNAPSHOT.jar
-          target: /home/ec2-user/pickcar-domain-test/
+          target: /home/${{ secrets.EC2_USERNAME }}/pickcar-domain-test/
           strip_components: 3  # domain/build/libs 제거
 
-      - name: Copy JAR and docker-compose.yml to EC2
+      - name: Copy docker-compose.yml to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
           debug: true
           host: ${{ secrets.DOMAIN_HOST }}
-          username: ec2-user
+          username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_ACTIONS_KEY }}
           source: docker/docker-compose.domain.yml
-          target: /home/ec2-user/pickcar-domain-test/
+          target: /home/${{ secrets.EC2_USERNAME }}/pickcar-domain-test/
           strip_components: 1  # docker 제거ㅇㅇ
 
       - name: SSH into EC2 and deploy with docker-compose
@@ -57,12 +53,12 @@ jobs:
         with:
           debug: true
           host: ${{ secrets.DOMAIN_HOST }}
-          username: ec2-user
+          username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_ACTIONS_KEY }}
           script: |
-            cd /home/ec2-user/pickcar-domain-test
+            cd /home/${{ secrets.EC2_USERNAME }}/pickcar-domain-test
             cat > .env <<EOF
-            SPRING_PROFILES_ACTIVE=prod
+            EC2_USERNAME=${{ secrets.EC2_USERNAME }}
             
             DB_HOST=${{ secrets.DB_HOST }}
             DB_PORT=${{ secrets.DB_PORT }}
@@ -76,21 +72,15 @@ jobs:
             RABBITMQ_PASSWORD=${{ secrets.RABBITMQ_PASSWORD }}
             
             SPRING_DATASOURCE_URL=jdbc:mysql://${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/${{ secrets.DB_NAME }}?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&useUnicode=true
-  
+            
             HOSTNAME=${{ secrets.HOSTNAME_DOMAIN }}
             EC2_INSTANCE_ID=${{ secrets.EC2_INSTANCE_ID_DOMAIN }}
-          
+            
             PINPOINT_AGENT_ID=${{ secrets.PINPOINT_AGENT_ID_DOMAIN }}
             PINPOINT_APPLICATION_NAME=${{ secrets.PINPOINT_APPLICATION_NAME_DOMAIN }}
             EOF
             
-            echo "${{ secrets.PROD_APPLICATION_YML_DOMAIN }}" | base64 -d > /home/ec2-user/pickcar-domain-test/application-prod.yml
+            echo "${{ secrets.PROD_APPLICATION_YML_DOMAIN }}" | base64 -d > /home/${{ secrets.EC2_USERNAME }}/pickcar-domain-test/application-prod.yml
             
             docker compose -f docker-compose.domain.yml down
             docker compose -f docker-compose.domain.yml up -d
-
-#             필요시 .env 파일 생성/업데이트
-#             echo "SPRING_DATASOURCE_URL=..." > .env
-#            echo "This is a test3"
-#            docker compose -f docker-compose.domain.yml down
-#            docker compose -f docker-compose.domain.yml up -d --build
