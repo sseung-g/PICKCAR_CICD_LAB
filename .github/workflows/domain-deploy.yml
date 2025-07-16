@@ -62,7 +62,7 @@ jobs:
           script: |
             cd /home/ec2-user/pickcar-domain-test
             cat > .env <<EOF
-            SPRING_PROFILES_ACTIVE=${{ secrets.SPRING_PROFILES_ACTIVE }}
+            SPRING_PROFILES_ACTIVE=prod
             
             DB_HOST=${{ secrets.DB_HOST }}
             DB_PORT=${{ secrets.DB_PORT }}
