@@ -24,7 +24,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build domain JAR
-#        working-directory: ./domain
+#        working-directory: ./domaindd
         run: ./gradlew :domain:clean :domain:build --stacktrace
 
       - name: Check built files
