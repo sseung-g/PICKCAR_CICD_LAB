@@ -19,7 +19,7 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      # gradlew 스크립트에 실행 권한을 줘서 Gradle 빌드 가능하도록 설정
+      # gradlew 스크립트에 실행 권한을 줘서 Gradle 빌드 가능하도록 설정 d
       - name: Grant execute permission to gradlew
         run: chmod +x ./gradlew
 
