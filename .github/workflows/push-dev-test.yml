@@ -1,0 +1,33 @@
+name: Deploy multi-module to multiple EC2s
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy-domain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build project domain module
+        run: ./gradlew :domain:clean :domain:build
+
+      - name: Save SSH key
+        run: |
+          echo "${{ secrets.EC2_DOMAIN_SSH_KEY }}" > ec2_domain_key.pem
+          chmod 600 ec2_domain_key.pem
+
+      - name: Copy domain jar to EC2 domain server
+        run: |
+          scp -o StrictHostKeyChecking=no -i ec2_domain_key.pem domain/build/libs/*.jar ${{ secrets.EC2_DOMAIN_USER }}@${{ secrets.EC2_DOMAIN_HOST }}:/home/ubuntu/domain.jar
+
+      - name: Restart domain service on EC2 domain server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_DOMAIN_HOST }}
+          username: ${{ secrets.EC2_DOMAIN_USER }}
+          key: ${{ secrets.EC2_DOMAIN_SSH_KEY }}
+          script: |
+            pkill -f domain.jar || true
+            nohup java -jar /home/ubuntu/domain.jar > domain.log 2>&1 &

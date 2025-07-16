@@ -1,38 +1,48 @@
-name: Test Build on dev PR
-
-#dev 브랜치 대상 PR 생성 시 실행
-on:
-  pull_request:
-    branches:
-      - dev
-
-jobs:
-  test-build:
-    runs-on: ubuntu-latest #GitHub에서 제공하는 Ubuntu 최신 버전 가상머신
-
-    steps:
-      # 현재 저장소의 코드 가져오기
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      # JDK 설치
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin' #OpenJDK의 인기 있는 무료 배포판
-          java-version: '21'
-
-      # Gradle wrapper 실행 권한 부여
-      - name: Grant execute permission for Gradle wrapper
-        run: chmod +x ./gradlew
-
-      # 빌드
-      - name: Build with Gradle
-        run: ./gradlew build
-
-      - name: Upload all JAR artifacts
-        uses: actions/upload-artifact@v3 #GitHub가 공식 제공하는 아티팩트 업로드 액션
-        with:
-          name: jar-files
-          path: |
-            **/build/libs/*.jar
+#name: Test Build on dev PR
+#
+##dev 브랜치 대상 PR 생성 시 실행
+#on:
+#  pull_request:
+#    branches:
+#      - dev
+#
+#jobs:
+#  test-build:
+#    runs-on: ubuntu-latest #GitHub에서 제공하는 Ubuntu 최신 버전 가상머신
+#
+#    steps:
+#      # 현재 저장소의 코드 가져오기
+#      - name: Checkout code
+#        uses: actions/checkout@v4
+#
+#      # 빌드 캐시 github actions 캐시에 저장
+#      - name: Cache Gradle packages
+#        uses: actions/cache@v3
+#        with:
+#          path: |
+#            ~/.gradle/caches
+#            ~/.gradle/wrapper
+#          key: gradle-cache-${{ runner.os }}-${{ github.head_ref }}-${{ github.run_number }}
+#          restore-keys: gradle-cache-
+#
+#      # JDK 설치
+#      - name: Set up JDK
+#        uses: actions/setup-java@v4
+#        with:
+#          distribution: 'temurin' #OpenJDK의 인기 있는 무료 배포판
+#          java-version: '21'
+#
+#      # Gradle wrapper 실행 권한 부여
+#      - name: Grant execute permission for Gradle wrapper
+#        run: chmod +x ./gradlew
+#
+#      # 빌드
+#      - name: Build with Gradle
+#        run: ./gradlew build
+#
+##      - name: Upload all JAR artifacts
+##        uses: actions/upload-artifact@v4 #GitHub가 공식 제공하는 아티팩트 업로드 액션
+##        with:
+##          name: jar-files
+##          path: |
+##            **/build/libs/*.jar
