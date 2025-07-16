@@ -58,6 +58,28 @@ jobs:
           key: ${{ secrets.EC2_ACTIONS_KEY }}
           script: |
             cd /home/ec2-user/pickcar-sse-test      
+            cat > .env <<EOF
+            SPRING_PROFILES_ACTIVE=${{ secrets.SPRING_PROFILES_ACTIVE }}
+            
+            DB_HOST=${{ secrets.DB_HOST }}
+            DB_PORT=${{ secrets.DB_PORT }}
+            DB_NAME=${{ secrets.DB_NAME }}
+            DB_USERNAME=${{ secrets.DB_USERNAME }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            
+            RABBITMQ_HOST=${{ secrets.RABBITMQ_HOST }}
+            RABBITMQ_PORT=${{ secrets.RABBITMQ_PORT }}
+            RABBITMQ_USERNAME=${{ secrets.RABBITMQ_USERNAME }}
+            RABBITMQ_PASSWORD=${{ secrets.RABBITMQ_PASSWORD }}
+            
+            SPRING_DATASOURCE_URL=jdbc:mysql://${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/${{ secrets.DB_NAME }}?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&useUnicode=true
+            
+            HOSTNAME=${{ secrets.HOSTNAME_SSE }}
+            EC2_INSTANCE_ID=${{ secrets.EC2_INSTANCE_ID_SSE }}
+            
+            PINPOINT_AGENT_ID=${{ secrets.PINPOINT_AGENT_ID_SSE }}
+            PINPOINT_APPLICATION_NAME=${{ secrets.PINPOINT_APPLICATION_NAME_SSE }}
+            EOF
             docker compose -f docker-compose.sse.yml down
             docker compose -f docker-compose.sse.yml up -d
 #            cat > .env <<EOF
