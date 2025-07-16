@@ -20,7 +20,7 @@ services:
       - PINPOINT_AGENT_ID=${PINPOINT_AGENT_ID}
       - PINPOINT_APPLICATION_NAME=${PINPOINT_APPLICATION_NAME}
     ports:
-      - "8080:8080"
+      - "8087:8080"
     volumes:
       - /home/ec2-user/pickcar-domain-test/domain-0.0.1-SNAPSHOT.jar
       - /home/ec2-user/pickcar-domain-test/logs:/app/logs
@@ -46,7 +46,7 @@ services:
     image: grafana/promtail:2.9.0
     container_name: promtail-test
     ports:
-      - "9080:9080"
+      - "9087:9080"
     command: -config.file=/etc/promtail/config.yml
     volumes:
       - /home/ec2-user/pickcar-domain-test/promtail-config.yml:/etc/promtail/config.yml
