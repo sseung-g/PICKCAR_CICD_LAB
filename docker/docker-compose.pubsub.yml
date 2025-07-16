@@ -21,6 +21,7 @@ services:
       - /home/ec2-user/pickcar-pubsub-test/producer-0.0.1-SNAPSHOT.jar:/app/app.jar
       - /home/ec2-user/pickcar-pubsub-test/logs:/app/logs
       - /pinpoint:/pinpoint
+      - /home/ec2-user/pickcar-pubsub-test/application-prod-producer.yml:/app/application-prod-producer.yml
     working_dir: /app
     command: >
       java
@@ -54,6 +55,7 @@ services:
       - /home/ec2-user/pickcar-pubsub-test/consumer-0.0.1-SNAPSHOT.jar:/app/app.jar
       - /home/ec2-user/pickcar-pubsub-test/logs:/app/logs
       - /pinpoint:/pinpoint
+      - /home/ec2-user/pickcar-pubsub-test/application-prod-consumer.yml:/app/application-prod-consumer.yml
     working_dir: /app
     command: >
       java
