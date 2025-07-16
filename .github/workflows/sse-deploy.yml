@@ -57,7 +57,9 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_ACTIONS_KEY }}
           script: |
-            cd /home/ec2-user/pickcar-sse-test
+            cd /home/ec2-user/pickcar-sse-test      
+            docker compose -f docker-compose.sse.yml down
+            docker compose -f docker-compose.sse.yml up -d
 #            cat > .env <<EOF
 #            jwt.secret-key=your-secret-key
 #            SPRING_PROFILES_ACTIVE=prod
@@ -73,9 +75,6 @@ jobs:
 #            PINPOINT_AGENT_ID=pickcar-agent
 #            PINPOINT_APPLICATION_NAME=pickcar-app
 #            EOF
-      
-            docker compose -f docker-compose.sse.yml down
-            docker compose -f docker-compose.sse.yml up -d
 #             필요시 .env 파일 생성/업데이트
 #             echo "SPRING_DATASOURCE_URL=..." > .env
 #            echo "This is a test3"
