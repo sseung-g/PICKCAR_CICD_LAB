@@ -22,7 +22,7 @@ services:
     ports:
       - "8087:8080"
     volumes:
-      - /home/ec2-user/pickcar-domain-test/domain-0.0.1-SNAPSHOT.jar
+      - /home/ec2-user/pickcar-domain-test/domain-0.0.1-SNAPSHOT.jar:/app/app.jar
       - /home/ec2-user/pickcar-domain-test/logs:/app/logs
       - /pinpoint:/pinpoint
     working_dir: /app
