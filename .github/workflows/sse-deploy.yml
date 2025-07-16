@@ -80,6 +80,9 @@ jobs:
             PINPOINT_AGENT_ID=${{ secrets.PINPOINT_AGENT_ID_SSE }}
             PINPOINT_APPLICATION_NAME=${{ secrets.PINPOINT_APPLICATION_NAME_SSE }}
             EOF
+            
+            echo "${{ secrets.PROD_APPLICATION_YML_SSE }}" | base64 -d > /home/ec2-user/pickcar-sse-test/application-prod.yml
+            
             docker compose -f docker-compose.sse.yml down
             docker compose -f docker-compose.sse.yml up -d
 #            cat > .env <<EOF

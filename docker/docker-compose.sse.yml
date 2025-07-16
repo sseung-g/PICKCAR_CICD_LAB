@@ -33,7 +33,7 @@ services:
       -Dpinpoint.config=/pinpoint/pinpoint-agent-2.5.4/pinpoint-root.config
       -Duser.timezone=Asia/Seoul
       -Dfile.encoding=UTF-8
-      -jar app.jar
+      -jar app.jar --spring.profiles.active=prod
     networks:
       - pickcar-net-test
 
