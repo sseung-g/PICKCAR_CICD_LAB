@@ -1,0 +1,53 @@
+#custom:
+#  deploy:
+#    domain: "https://pickcar.online"
+#  jwt:
+#    secret: "ZsR872u9NukGnsjbY5olgyIPZTErn82NETmxjpozaS4="
+#spring:
+#  datasource:
+#    url: ${SPRING_DATASOURCE_URL}
+#    username: ${SPRING_DATASOURCE_USERNAME}
+#    password: ${SPRING_DATASOURCE_PASSWORD}
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#  rabbitmq:
+#    host: ${SPRING_RABBITMQ_HOST}
+#    port: ${SPRING_RABBITMQ_PORT}
+#    username: ${SPRING_RABBITMQ_USERNAME}
+#    password: ${SPRING_RABBITMQ_PASSWORD}
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    properties:
+#      hibernate:
+#        show_sql: true          # TODO: 추후 log 환경으로 변경
+#        format_sql: true
+#        use_sql_comments: true
+web:
+  cors:
+    allowed-origins: "https://pickcar.online"
+
+jwt:
+  secret-key: "67UxlKsXLsb0shXLgTwSdyYRLkSg0hIpQA1ekoKVZQc="
+
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST}
+    port: ${SPRING_RABBITMQ_PORT}
+    username: ${SPRING_RABBITMQ_USERNAME}
+    password: ${SPRING_RABBITMQ_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        show_sql: false
+
+# 로그 샘플링
+management:
+  tracing:
+    sampling:
+      probability: 1.0  # NOTE: 로그 용량 너무 많이나온다면 줄이기 고려
