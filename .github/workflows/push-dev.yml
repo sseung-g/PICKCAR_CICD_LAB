@@ -65,5 +65,5 @@ jobs:
             # 필요시 .env 파일 생성/업데이트
             # echo "SPRING_DATASOURCE_URL=..." > .env
             echo "This is a test3"
-            docker-compose -f docker-compose.domain.yml down
-            docker-compose -f docker-compose.domain.yml up -d --build
+            docker compose -f docker-compose.domain.yml down
+            docker compose -f docker-compose.domain.yml up -d --build
