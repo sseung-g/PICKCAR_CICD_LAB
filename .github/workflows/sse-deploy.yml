@@ -1,7 +1,7 @@
 name: Build and Deploy SSE Service
 
 on:
-#  workflow_dispatch:
+#  workflow_dispatch :
   push:
     branches:
       - dev
