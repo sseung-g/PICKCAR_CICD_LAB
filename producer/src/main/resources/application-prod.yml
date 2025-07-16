@@ -1,0 +1,6 @@
+web:
+  cors:
+    allowed-origins: "https://pickcar.online"
+
+jwt:
+  secret-key: "67UxlKsXLsb0shXLgTwSdyYRLkSg0hIpQA1ekoKVZQc="

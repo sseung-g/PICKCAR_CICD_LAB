@@ -187,7 +187,7 @@ application-test.yml
 application-secret.yml
 application-dev.yml
 application-local.yml
-application-prod.yml
+#application-prod.yml
 
 # 임시
 loki-data
