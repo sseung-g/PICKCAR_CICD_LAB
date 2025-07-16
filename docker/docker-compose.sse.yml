@@ -1,8 +1,8 @@
 version: '3.8'
 
 services:
-  pickcar-emulator:
-    container_name: pickcar-emulator
+  pickcar-emulator-test:
+    container_name: pickcar-emulator-test
     image: openjdk:21-jdk
     environment:
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
@@ -16,13 +16,13 @@ services:
       - PINPOINT_AGENT_ID=${PINPOINT_AGENT_ID}
       - PINPOINT_APPLICATION_NAME=${PINPOINT_APPLICATION_NAME}
     ports:
-      - "8080:8080"
+      - "8087:8080"
     depends_on:
       redis:
         condition: service_healthy
     volumes:
-      - /home/ec2-user/pickcar-sse/emulator-0.0.1-SNAPSHOT.jar:/app/app.jar
-      - /home/ec2-user/pickcar-sse/logs:/app/logs
+      - /home/ec2-user/pickcar-sse-test/emulator-0.0.1-SNAPSHOT.jar:/app/app.jar
+      - /home/ec2-user/pickcar-sse-test/logs:/app/logs
       - /pinpoint:/pinpoint
     working_dir: /app
     command: >
@@ -35,15 +35,15 @@ services:
       -Dfile.encoding=UTF-8
       -jar app.jar
     networks:
-      - pickcar-net
+      - pickcar-net-test
 
   redis:
-    container_name: pickcar-redis
+    container_name: pickcar-redis-test
     image: redis:7
     ports:
-      - "6379:6379"
+      - "6378:6379"
     networks:
-      - pickcar-net
+      - pickcar-net-test
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 10s
@@ -52,27 +52,27 @@ services:
 
   promtail:
     image: grafana/promtail:2.9.0
-    container_name: promtail
+    container_name: promtail-test
     ports:
-      - "9080:9080"
+      - "9085:9080"
     command: -config.file=/etc/promtail/config.yml
     volumes:
-      - /home/ec2-user/pickcar-sse/promtail-config.yml:/etc/promtail/config.yml
-      - /home/ec2-user/pickcar-sse/logs:/app/logs
-      - /home/ec2-user/pickcar-sse/promtail:/var/log/promtail
+      - /home/ec2-user/pickcar-sse-test/promtail-config.yml:/etc/promtail/config.yml
+      - /home/ec2-user/pickcar-sse-test/logs:/app/logs
+      - /home/ec2-user/pickcar-sse-test/promtail:/var/log/promtail
     environment:
       - HOSTNAME=${HOSTNAME:-$(hostname)}
       - EC2_INSTANCE_ID=${EC2_INSTANCE_ID:-unknown}
     networks:
-      - pickcar-net
+      - pickcar-net-test
     restart: unless-stopped
     depends_on:
-      - pickcar-emulator
+      - pickcar-emulator-test
 
 volumes:
   mysql-data:
     name: mysql-data
 
 networks:
-  pickcar-net:
-    name: pickcar-net
+  pickcar-net-test:
+    name: pickcar-net-test
