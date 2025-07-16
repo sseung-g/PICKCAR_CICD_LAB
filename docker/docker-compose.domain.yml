@@ -66,5 +66,5 @@ volumes:
     name: mysql-data
 
 networks:
-  pickcar-net:
+  pickcar-net-test:
     name: pickcar-net-test
