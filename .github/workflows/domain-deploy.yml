@@ -50,7 +50,7 @@ jobs:
           key: ${{ secrets.EC2_ACTIONS_KEY }}
           source: docker/docker-compose.domain.yml
           target: /home/ec2-user/pickcar-domain-test/
-          strip_components: 1  # docker 제거
+          strip_components: 1  # docker 제거ㅇㅇ
 
       - name: SSH into EC2 and deploy with docker-compose
         uses: appleboy/ssh-action@v0.1.7
