@@ -18,10 +18,10 @@ services:
     ports:
       - "8087:8080"
     volumes:
-      - /home/ec2-user/pickcar-pubsub-test/producer-0.0.1-SNAPSHOT.jar:/app/app.jar
-      - /home/ec2-user/pickcar-pubsub-test/logs:/app/logs
+      - /home/${EC2_USERNAME}/pickcar-pubsub-test/producer-0.0.1-SNAPSHOT.jar:/app/app.jar
+      - /home/${EC2_USERNAME}/pickcar-pubsub-test/logs:/app/logs
       - /pinpoint:/pinpoint
-      - /home/ec2-user/pickcar-pubsub-test/application-prod-producer.yml:/app/application-prod-producer.yml
+      - /home/${EC2_USERNAME}/pickcar-pubsub-test/application-prod-producer.yml:/app/application-prod-producer.yml
     working_dir: /app
     command: >
       java
@@ -52,10 +52,10 @@ services:
     ports:
       - "8088:8080"
     volumes:
-      - /home/ec2-user/pickcar-pubsub-test/consumer-0.0.1-SNAPSHOT.jar:/app/app.jar
-      - /home/ec2-user/pickcar-pubsub-test/logs:/app/logs
+      - /home/${EC2_USERNAME}/pickcar-pubsub-test/consumer-0.0.1-SNAPSHOT.jar:/app/app.jar
+      - /home/${EC2_USERNAME}/pickcar-pubsub-test/logs:/app/logs
       - /pinpoint:/pinpoint
-      - /home/ec2-user/pickcar-pubsub-test/application-prod-consumer.yml:/app/application-prod-consumer.yml
+      - /home/${EC2_USERNAME}/pickcar-pubsub-test/application-prod-consumer.yml:/app/application-prod-consumer.yml
     working_dir: /app
     command: >
       java
@@ -76,9 +76,9 @@ services:
       - "9089:9080"
     command: -config.file=/etc/promtail/config.yml
     volumes:
-      - /home/ec2-user/pickcar-pubsub-test/promtail-config.yml:/etc/promtail/config.yml
-      - /home/ec2-user/pickcar-pubsub-test/logs:/app/logs
-      - /home/ec2-user/pickcar-pubsub-test/promtail:/var/log/promtail
+      - /home/${EC2_USERNAME}/pickcar-pubsub-test/promtail-config.yml:/etc/promtail/config.yml
+      - /home/${EC2_USERNAME}/pickcar-pubsub-test/logs:/app/logs
+      - /home/${EC2_USERNAME}/pickcar-pubsub-test/promtail:/var/log/promtail
     environment:
       - HOSTNAME=${HOSTNAME:-$(hostname)}
       - EC2_INSTANCE_ID=${EC2_INSTANCE_ID:-unknown}
