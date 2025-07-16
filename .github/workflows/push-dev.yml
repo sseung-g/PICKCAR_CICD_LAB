@@ -29,7 +29,7 @@ jobs:
         run: ./gradlew :domain:clean :domain:build --stacktrace
 
       - name: Check built files
-        run: ls -al domain/build/libs/
+        run: ls -al docker/
 
       - name: Copy JAR and docker-compose.yml to EC2
         uses: appleboy/scp-action@v0.1.4
@@ -39,7 +39,7 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_ACTIONS_KEY }}
           port: 8082
-          source: "domain/build/libs/domain-0.0.1-SNAPSHOT.jar docker/docker-compose.domain.yml"
+          source: "docker/docker-compose.domain.yml domain/build/libs/domain-0.0.1-SNAPSHOT.jar"
           target: /home/ec2-user/pickcar-domain-test/
 
       - name: SSH into EC2 and deploy with docker-compose
