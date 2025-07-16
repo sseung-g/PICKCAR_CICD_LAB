@@ -39,7 +39,7 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_ACTIONS_KEY }}
           port: 22
-          source: domain/build/libs/domain-0.0.1-SNAPSHOT.jar
+          source: "domain/build/libs/domain-0.0.1-SNAPSHOT.jar docker/docker-compose.domain.yml"
           target: /home/ec2-user/pickcar-domain-test/
 
       - name: SSH into EC2 and deploy with docker-compose
