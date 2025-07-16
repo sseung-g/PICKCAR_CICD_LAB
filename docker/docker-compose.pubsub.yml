@@ -1,8 +1,8 @@
 version: '3.8'
 
 services:
-  pickcar-producer:
-    container_name: pickcar-producer
+  pickcar-producer-test:
+    container_name: pickcar-producer-test
     image: openjdk:21-jdk
     environment:
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
@@ -16,10 +16,10 @@ services:
       - PINPOINT_AGENT_ID=${PINPOINT_AGENT_ID_PRODUCER}
       - PINPOINT_APPLICATION_NAME=${PINPOINT_APPLICATION_NAME_PRODUCER}
     ports:
-      - "8080:8080"
+      - "8087:8080"
     volumes:
-      - /home/ec2-user/pickcar-pubsub/producer-0.0.1-SNAPSHOT.jar:/app/app.jar
-      - /home/ec2-user/pickcar-pubsub/logs:/app/logs
+      - /home/ec2-user/pickcar-pubsub-test/producer-0.0.1-SNAPSHOT.jar:/app/app.jar
+      - /home/ec2-user/pickcar-pubsub-test/logs:/app/logs
       - /pinpoint:/pinpoint
     working_dir: /app
     command: >
@@ -32,10 +32,10 @@ services:
       -Dfile.encoding=UTF-8
       -jar app.jar
     networks:
-      - pickcar-net
+      - pickcar-net-test
 
-  pickcar-consumer:
-    container_name: pickcar-consumer
+  pickcar-consumer-test:
+    container_name: pickcar-consumer-test
     image: openjdk:21-jdk
     environment:
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
@@ -49,10 +49,10 @@ services:
       - PINPOINT_AGENT_ID=${PINPOINT_AGENT_ID_CONSUMER}
       - PINPOINT_APPLICATION_NAME=${PINPOINT_APPLICATION_NAME_CONSUMER}
     ports:
-      - "8081:8080"
+      - "8088:8080"
     volumes:
-      - /home/ec2-user/pickcar-pubsub/consumer-0.0.1-SNAPSHOT.jar:/app/app.jar
-      - /home/ec2-user/pickcar-pubsub/logs:/app/logs
+      - /home/ec2-user/pickcar-pubsub-test/consumer-0.0.1-SNAPSHOT.jar:/app/app.jar
+      - /home/ec2-user/pickcar-pubsub-test/logs:/app/logs
       - /pinpoint:/pinpoint
     working_dir: /app
     command: >
@@ -65,32 +65,32 @@ services:
       -Dfile.encoding=UTF-8
       -jar app.jar
     networks:
-      - pickcar-net
+      - pickcar-net-test
 
   promtail:
     image: grafana/promtail:2.9.0
-    container_name: promtail
+    container_name: promtail-test
     ports:
-      - "9080:9080"
+      - "9089:9080"
     command: -config.file=/etc/promtail/config.yml
     volumes:
-      - /home/ec2-user/pickcar-pubsub/promtail-config.yml:/etc/promtail/config.yml
-      - /home/ec2-user/pickcar-pubsub/logs:/app/logs
-      - /home/ec2-user/pickcar-pubsub/promtail:/var/log/promtail
+      - /home/ec2-user/pickcar-pubsub-test/promtail-config.yml:/etc/promtail/config.yml
+      - /home/ec2-user/pickcar-pubsub-test/logs:/app/logs
+      - /home/ec2-user/pickcar-pubsub-test/promtail:/var/log/promtail
     environment:
       - HOSTNAME=${HOSTNAME:-$(hostname)}
       - EC2_INSTANCE_ID=${EC2_INSTANCE_ID:-unknown}
     networks:
-      - pickcar-net
+      - pickcar-net-test
     restart: unless-stopped
     depends_on:
-      - pickcar-producer
-      - pickcar-consumer
+      - pickcar-producer-test
+      - pickcar-consumer-test
 
 volumes:
   mysql-data:
     name: mysql-data
 
 networks:
-  pickcar-net:
-    name: pickcar-net
+  pickcar-net-test:
+    name: pickcar-net-test

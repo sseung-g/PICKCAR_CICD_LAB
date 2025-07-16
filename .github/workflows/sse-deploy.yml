@@ -1,4 +1,4 @@
-name: Build and Deploy Domain Service
+name: Build and Deploy SSE Service
 
 on:
 #  workflow_dispatch:
@@ -25,61 +25,57 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build domain JAR
-#        working-directory: ./domain
-        run: ./gradlew :domain:clean :domain:build --stacktrace
+        run: ./gradlew :emulator:clean :emulator:build --stacktrace
 
-      - name: Check built files
-        run: ls -al docker/
-
-      - name: Copy JAR and SNAPSHOT to EC2
+      - name: Copy JAR to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
           debug: true
-          host: ${{ secrets.DOMAIN_HOST }}
+          host: ${{ secrets.SSE_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_ACTIONS_KEY }}
-          source: domain/build/libs/domain-0.0.1-SNAPSHOT.jar
-          target: /home/ec2-user/pickcar-domain-test/
-          strip_components: 3  # domain/build/libs 제거
+          source: domain/build/libs/emulator-0.0.1-SNAPSHOT.jar
+          target: /home/ec2-user/pickcar-sse-test/
+          strip_components: 3  # 모듈/build/libs 제거
 
-      - name: Copy JAR and docker-compose.yml to EC2
+      - name: Copy docker-compose.yml to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
           debug: true
-          host: ${{ secrets.DOMAIN_HOST }}
+          host: ${{ secrets.SSE_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_ACTIONS_KEY }}
-          source: docker/docker-compose.domain.yml
-          target: /home/ec2-user/pickcar-domain-test/
+          source: docker/docker-compose.sse.yml
+          target: /home/ec2-user/pickcar-sse-test/
           strip_components: 1  # docker 제거
 
       - name: SSH into EC2 and deploy with docker-compose
         uses: appleboy/ssh-action@v0.1.7
         with:
           debug: true
-          host: ${{ secrets.DOMAIN_HOST }}
+          host: ${{ secrets.SSE_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_ACTIONS_KEY }}
           script: |
-            cd /home/ec2-user/pickcar-domain-test
-            cat > .env <<EOF
-            jwt.secret-key=your-secret-key
-            SPRING_PROFILES_ACTIVE=prod
-            DB_HOST=your-db-host
-            DB_PORT=3306
-            DB_NAME=your-db
-            DB_USERNAME=root
-            DB_PASSWORD=your-password
-            RABBITMQ_HOST=localhost
-            RABBITMQ_PORT=5672
-            RABBITMQ_USERNAME=guest
-            RABBITMQ_PASSWORD=guest
-            PINPOINT_AGENT_ID=pickcar-agent
-            PINPOINT_APPLICATION_NAME=pickcar-app
-            EOF
+            cd /home/ec2-user/pickcar-sse-test
+#            cat > .env <<EOF
+#            jwt.secret-key=your-secret-key
+#            SPRING_PROFILES_ACTIVE=prod
+#            DB_HOST=your-db-host
+#            DB_PORT=3306
+#            DB_NAME=your-db
+#            DB_USERNAME=root
+#            DB_PASSWORD=your-password
+#            RABBITMQ_HOST=localhost
+#            RABBITMQ_PORT=5672
+#            RABBITMQ_USERNAME=guest
+#            RABBITMQ_PASSWORD=guest
+#            PINPOINT_AGENT_ID=pickcar-agent
+#            PINPOINT_APPLICATION_NAME=pickcar-app
+#            EOF
       
-            docker compose -f docker-compose.domain.yml down
-            docker compose -f docker-compose.domain.yml up -d
+            docker compose -f docker-compose.sse.yml down
+            docker compose -f docker-compose.sse.yml up -d
 #             필요시 .env 파일 생성/업데이트
 #             echo "SPRING_DATASOURCE_URL=..." > .env
 #            echo "This is a test3"
