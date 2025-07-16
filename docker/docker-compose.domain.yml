@@ -4,9 +4,9 @@ services:
   pickcar-domain:
     container_name: pickcar-domain
     image: eclipse-temurin:21-jdk
-    build:
-        context: ../domain
-        dockerfile: Dockerfile.prod
+#    build:
+#        context: ../domain
+#        dockerfile: Dockerfile.prod
     environment:
       - TZ=Asia/Seoul
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
@@ -22,7 +22,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-#      - /home/ec2-user/pickcar-domain/domain-0.0.1-SNAPSHOT.jar:/app/app.jar
+      - /home/ec2-user/pickcar-domain-test/domain-0.0.1-SNAPSHOT.jar
       - /home/ec2-user/pickcar-domain-test/logs:/app/logs
       - /pinpoint:/pinpoint
     working_dir: /app
