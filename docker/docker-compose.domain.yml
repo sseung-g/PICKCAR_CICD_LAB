@@ -1,8 +1,8 @@
 version: '3.8'
 
 services:
-  pickcar-domain:
-    container_name: pickcar-domain
+  pickcar-domain-test:
+    container_name: pickcar-domain-test
     image: eclipse-temurin:21-jdk
 #    build:
 #        context: ../domain
@@ -40,11 +40,11 @@ services:
       -Dclient.encoding.override=UTF-8
       -jar app.jar
     networks:
-      - pickcar-net
+      - pickcar-net-test
 
   promtail:
     image: grafana/promtail:2.9.0
-    container_name: promtail
+    container_name: promtail-test
     ports:
       - "9080:9080"
     command: -config.file=/etc/promtail/config.yml
@@ -56,10 +56,10 @@ services:
       - HOSTNAME=${HOSTNAME:-$(hostname)}
       - EC2_INSTANCE_ID=${EC2_INSTANCE_ID:-unknown}
     networks:
-      - pickcar-net
+      - pickcar-net-test
     restart: unless-stopped
     depends_on:
-      - pickcar-domain
+      - pickcar-domain-test
 
 volumes:
   mysql-data:
@@ -67,4 +67,4 @@ volumes:
 
 networks:
   pickcar-net:
-    name: pickcar-net
+    name: pickcar-net-test
