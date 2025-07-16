@@ -36,9 +36,18 @@ jobs:
           host: ${{ secrets.PUBSUB_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_ACTIONS_KEY }}
-          source: |
-            consumer/build/libs/consumer-0.0.1-SNAPSHOT.jar
-            producer/build/libs/producer-0.0.1-SNAPSHOT.jar
+          source: consumer/build/libs/consumer-0.0.1-SNAPSHOT.jar
+          target: /home/ec2-user/pickcar-pubsub-test/
+          strip_components: 3  # 모듈/build/libs 제거
+
+      - name: Copy JAR to EC2
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          debug: true
+          host: ${{ secrets.PUBSUB_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_ACTIONS_KEY }}
+          source: producer/build/libs/producer-0.0.1-SNAPSHOT.jar
           target: /home/ec2-user/pickcar-pubsub-test/
           strip_components: 3  # 모듈/build/libs 제거
 
