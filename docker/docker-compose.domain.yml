@@ -38,7 +38,7 @@ services:
       -Duser.language=ko
       -Duser.country=KR
       -Dclient.encoding.override=UTF-8
-      -jar app.jar
+      -jar app.jar --spring.profiles.active=prod
     networks:
       - pickcar-net-test
 

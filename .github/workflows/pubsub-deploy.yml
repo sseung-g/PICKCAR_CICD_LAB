@@ -96,6 +96,7 @@ jobs:
             PINPOINT_AGENT_ID_CONSUMER=${{ secrets.PINPOINT_AGENT_ID_CONSUMER }}
             PINPOINT_APPLICATION_NAME_CONSUMER=${{ secrets.PINPOINT_APPLICATION_NAME_CONSUMER }}
             EOF
+#            echo "${{ secrets.PROD_APPLICATION_YML_BASE64 }}" | base64 -d > /home/ec2-user/app/config/application-prod.yml
             docker compose -f docker-compose.pubsub.yml down
             docker compose -f docker-compose.pubsub.yml up -d
 #            cat > .env <<EOF
