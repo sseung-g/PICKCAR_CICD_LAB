@@ -26,7 +26,10 @@ jobs:
 
       - name: Build domain JAR
 #        working-directory: ./domain
-        run: ./gradlew :domain:clean :domain:build
+        run: ./gradlew :domain:clean :domain:build --stacktrace
+
+      - name: Check built files
+        run: ls -al domain/build/libs/
 
       - name: Copy JAR and docker-compose.yml to EC2
         uses: appleboy/scp-action@v0.1.4
@@ -37,7 +40,7 @@ jobs:
           source: |
             domain/build/libs/domain-0.0.1-SNAPSHOT.jar
             docker/docker-compose.domain.yml
-          target: /home/ec2-user/pickcar-domain/
+          target: /home/ec2-user/pickcar-domain-test/
 
       - name: SSH into EC2 and deploy with docker-compose
         uses: appleboy/ssh-action@v0.1.7
