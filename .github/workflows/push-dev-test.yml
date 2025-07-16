@@ -27,6 +27,7 @@ jobs:
         with:
           host: ${{ secrets.EC2_DOMAIN_HOST }}
           username: ${{ secrets.EC2_DOMAIN_USER }}
+          port: 22
           key: ${{ secrets.EC2_DOMAIN_SSH_KEY }}
           script: |
             pkill -f domain.jar || true

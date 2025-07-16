@@ -38,6 +38,7 @@ jobs:
           host: ${{ secrets.DOMAIN_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_ACTIONS_KEY }}
+          port: 22
           source: domain/build/libs/domain-0.0.1-SNAPSHOT.jar
           target: /home/ec2-user/pickcar-domain-test/
 
@@ -47,6 +48,7 @@ jobs:
           host: ${{ secrets.DOMAIN_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_ACTIONS_KEY }}
+          port: 22
           script: |
             cd /home/ec2-user/pickcar-domain-test
             # 필요시 .env 파일 생성/업데이트
