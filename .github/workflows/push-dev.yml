@@ -31,6 +31,16 @@ jobs:
       - name: Check built files
         run: ls -al docker/
 
+      - name: Copy JAR and SNAPSHOT to EC2
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          debug: true
+          host: ${{ secrets.DOMAIN_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_ACTIONS_KEY }}
+          source: domain/build/libs/domain-0.0.1-SNAPSHOT.jar
+          target: /home/ec2-user/pickcar-domain-test/
+
       - name: Copy JAR and docker-compose.yml to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
@@ -38,13 +48,13 @@ jobs:
           host: ${{ secrets.DOMAIN_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_ACTIONS_KEY }}
-          port: 8082
-          source: "docker/docker-compose.domain.yml domain/build/libs/domain-0.0.1-SNAPSHOT.jar"
+          source: docker/docker-compose.domain.yml
           target: /home/ec2-user/pickcar-domain-test/
 
       - name: SSH into EC2 and deploy with docker-compose
         uses: appleboy/ssh-action@v0.1.7
         with:
+          debug: true
           host: ${{ secrets.DOMAIN_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_ACTIONS_KEY }}
