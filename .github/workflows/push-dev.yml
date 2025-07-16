@@ -1,10 +1,10 @@
 name: Build and Deploy Domain Service
 
 on:
-  workflow_dispatch:
-#  push:
-#    branches:
-#      - dev
+#  workflow_dispatch:
+  push:
+    branches:
+      - dev
 
 jobs:
   build_and_deploy:
@@ -49,5 +49,6 @@ jobs:
             cd /home/ec2-user/pickcar-domain
             # 필요시 .env 파일 생성/업데이트
             # echo "SPRING_DATASOURCE_URL=..." > .env
+            echo "This is a test3"
             docker-compose -f docker-compose.domain.yml down
             docker-compose -f docker-compose.domain.yml up -d --build
