@@ -83,6 +83,9 @@ jobs:
             PINPOINT_AGENT_ID=${{ secrets.PINPOINT_AGENT_ID_DOMAIN }}
             PINPOINT_APPLICATION_NAME=${{ secrets.PINPOINT_APPLICATION_NAME_DOMAIN }}
             EOF
+            
+            echo "${{ secrets.PROD_APPLICATION_YML_DOMAIN }}" | base64 -d > /home/ec2-user/pickcar-domain-test/application-prod.yml
+            
             docker compose -f docker-compose.domain.yml down
             docker compose -f docker-compose.domain.yml up -d
 
